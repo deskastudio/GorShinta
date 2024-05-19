@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Page | Gor Sinta</title>
+    <link href="./static/src/output.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#sidebar-toggle').click(function () {
+                $('.lg\\:block').toggle();
+            });
+
+                $('.selesaikan-btn').click(function () {
+                    const id = $(this).data('id');
+                    $.post('/selesaikanPemesanan/' + id, function (response) {
+                        if (response.success) {
+                            location.reload(); // Reload halaman jika berhasil
+                        } else {
+                            alert('Gagal menyelesaikan pemesanan: ' + response.error);
+                        }
+                    });
+                });
+            });
+    </script>
+</head>
+<body class="bg-gray-100">
+    {% include "asideAdmin.html" %}
+    <div class="flex flex-col lg:flex-row">
+        <section class="container mx-auto px-4 py-10">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                <div class="flex items-center gap-x-3 mb-4 sm:mb-0">
+                    <h2 class="text-lg font-medium text-gray-800 dark:text-white">Data Pemesanan</h2>
+                    <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">Gor Shinta</span>
+                </div>
+                <div>
+                    <a href="/tambahDataLapanganFutsal" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-400">Tambah Lapangan</a>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <div class="inline-block min-w-full align-middle">
+                    <div class="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-800">
+                                <tr>
+                                    <th class="py-3 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Nama</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">No. Handphone</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Tanggal</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Waktu</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Harga</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Jenis Lapangan</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Nama Lapangan</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Jenis Pembayaran</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Metode Pembayaran</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Bukti Pembayaran</th>
+                                    <th class="px-4 py-3 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Tindakan</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                                {% for data in dataPemesanan %}
+                                <tr>
+                                    <td class="px-4 py-4 text-sm font-medium text-gray-700 dark:text-gray-200">{{ data.fullname }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.phone_number }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.selected_date }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.selected_time }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.selected_price }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.selected_sport }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.selected_court }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.payment_type }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.payment_method }}</td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">
+                                        {% if data.payment_proof %}
+                                        <img src="{{ url_for('static', filename='img/' ~ data.payment_proof) }}" alt="Bukti Pembayaran" width="70">
+                                        {% else %}
+                                        Tidak ada bukti
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">
+                                        <button class="text-white px-3 py-2 rounded-lg bg-green-500 hover:text-green-700 selesaikan-btn" data-id="{{ data._id }}">Selesai</button>
+                                    </td>
+                                </tr>   
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                <div>
+                    Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
+                </div>
+                <div class="flex items-center gap-x-4">
+                    <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 bg-white text-gray-700 border rounded-md hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 sm:w-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                        </svg>
+                        <span>Previous</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 bg-white text-gray-700 border rounded-md hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 sm:w-auto">
+                        <span>Next</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</aside>
+</body>
+</html>

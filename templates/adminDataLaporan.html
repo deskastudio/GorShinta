@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Page | Gor Sinta</title>
+    <link href="./static/src/output.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // jQuery script to toggle sidebar for mobile screens
+        $(document).ready(function () {
+            $('#sidebar-toggle').click(function () {
+                $('.lg\\:block').toggle();
+            });
+        });
+    </script>
+  </head>
+  <body class="bg-gray-100">
+
+    {% include "asideAdmin.html" %}
+        <!-- form admin start -->
+        <div class="">
+            <section class="container px-8 py-10 mx-auto">
+                <div class="sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <div class="flex items-center gap-x-3">
+                            <h2 class="text-lg font-medium text-gray-800 dark:text-white">Laporan Pemesanan</h2>
+            
+                            <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">Gor Shinta</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="/tambahDataLapanganFutsal" class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-400">Tambah Lapangan</a>
+                    </div>
+                </div>
+            
+                <div class="flex flex-col mt-6">
+                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                            <div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                    <thead class="bg-gray-50 dark:bg-gray-800">
+                                        <tr>
+                                            <th scope="col" class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                <button class="flex items-center gap-x-3 focus:outline-none">
+                                                    <span>Jenis Lapangan</span>
+                                                </button>
+                                            </th>
+            
+                                            <th scope="col" class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                Foto
+                                            </th>
+            
+                                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                Harga
+                                            </th>
+            
+                                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                Nama Lapangan
+                                            </th>
+
+                                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                Deskripsi
+                                            </th>
+                                            
+                                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                Tindakan
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                                        {% for data in dataLapangan %}
+                                        <tr>
+                                            <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                <div>
+                                                    <h2>{{ data.jenis }}</h2>
+                                                </div>
+                                            </td>
+                                            <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
+                                                <div>
+                                                    <img src="../static/img/{{data.foto}}" alt="" width="70px">
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                <div>
+                                                    <h4>Rp. {{ data.harga }}</h4>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                <h2>{{ data.nama }}</h2>
+                                            </td>
+
+                                            <td class="px-4 py-4 text-sm whitespace-nowrap">
+                                                <h2>{{ data.deskripsi }}</h2>
+                                            </td>
+
+                                            <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
+                                                <button class="text-indigo-600 hover:text-indigo-900 mr-2" onclick="window.location.href='/editDataLapanganFutsal/{{data._id}}'">Edit</button>
+                                                <button class="text-red-600 hover:text-red-900" onclick="window.location.href='/hapusDataLapanganFutsal/{{data._id}}'">Hapus</button>
+                                            </td>
+                                        </tr>   
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
+                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                        Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span> 
+                    </div>
+            
+                    <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
+                        <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                            </svg>
+            
+                            <span>
+                                previous
+                            </span>
+                        </a>
+            
+                        <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+                            <span>
+                                Next
+                            </span>
+            
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- form admin end -->
+    </aside>
+    <!-- sidebar end  -->
+
+    
+
+    <!-- hero section start -->
+    
+    <!-- hero section end -->
+
+  </body>
+</html>

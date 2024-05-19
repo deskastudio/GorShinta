@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Page | Gor Sinta</title>
+    <link href="../static/src/output.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js"></script>
+    <style>
+      /* Add your custom styles here if needed */
+      #calendar-container {
+        width: 100%;
+        margin: auto;
+      }
+
+      #calendar-container {
+        max-width: 350px;
+        padding: 0 20px !important;
+      }
+
+      .fc-toolbar-title {
+        font-size: 14px !important;
+      }
+
+      .fc-view-harness {
+        margin-bottom: 20px !important;
+      }
+
+      .date-button {
+        width: 100%;
+        margin-top: 10px;
+        font-size: 12px;
+        padding: 5px;
+      }
+
+      /* Menyesuaikan ukuran tulisan "Today" */
+      .fc-today-button {
+        font-size: 12px !important;
+      }
+
+      /* Menyesuaikan ukuran tombol "Next" dan "Previous" */
+      .fc-prev-button,
+      .fc-next-button {
+        font-size: 12px !important;
+      }
+
+      /* Gaya untuk menyesuaikan ukuran kalender */
+      .fc-daygrid-day {
+        font-size: 12px;
+        padding: 5px;
+      }
+
+      /* Gaya untuk tombol "Book Now" */
+      .date-button {
+        width: 100%;
+        margin-top: 10px;
+        font-size: 12px;
+        padding: 5px;
+      }
+
+      /* Add your custom styles here if needed */
+      .time-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+      }
+
+      /* Style untuk kontainer tombol */
+      #button-container {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 20px;
+        display: grid;
+        justify-items: center;
+        background: #f9fafb;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Style untuk judul */
+      #button-container h2 {
+        text-align: center;
+        margin-bottom: 10px;
+        color: black;
+        font-size: 18px;
+        position: relative;
+        display: inline-block;
+      }
+
+      /* Style untuk garis bawah */
+      #button-container h2::after {
+        content: "";
+        display: block;
+        width: 50px;
+        height: 2px;
+        background-color: black;
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      /* Style untuk tombol */
+      .date-button {
+        background-color: #4a90e2;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+
+      /* Hover state untuk tombol */
+      .date-button:hover {
+        background-color: #357ae8;
+        transform: scale(1.05);
+      }
+
+      /* Style untuk hari */
+      .selected-day {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      /* Style untuk tanggal */
+      .selected-date {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+    </style>
+    <script>
+      // JavaScript code
+      document.addEventListener("DOMContentLoaded", function () {
+        // FullCalendar initialization
+        const calendarEl = document.getElementById("calendar");
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: "dayGridMonth",
+          selectable: true,
+          dateClick: function (info) {
+            const today = new Date();
+            // Check if the clicked date is in the past
+            if (info.date < today.setHours(0,0,0,0)) {
+              alert("Tanggal sudah berlalu.");
+              return;
+            }
+            // Remove any existing buttons
+            $(".date-button").remove();
+            // Create new buttons beside clicked date
+            const availableTimes = getAvailableTimes();
+            availableTimes.forEach((time) => {
+              $(`<button class="date-button" data-lapangan-id="${info.lapanganId}">${time}</button>`).appendTo($(".time-grid"));
+            });
+            // Set the selected date and day in variables
+            const selectedDate = info.date.toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+            const selectedDay = info.date.toLocaleDateString("en-GB", {
+              weekday: "long",
+            });
+            // Display selected day and date together
+            $("#selected-date").text(selectedDay + ", " + selectedDate);
+          },
+        });
+        calendar.render();
+
+        // Function to get available times from 10am to 1am
+        function getAvailableTimes() {
+          const times = [];
+          for (let i = 10; i <= 24; i++) {
+            const hour = i < 13 ? i : i - 12; // Convert to 12-hour format
+            const ampm = i < 12 ? "AM" : "PM"; // Determine AM or PM
+            const timeString = hour + ":00 " + ampm;
+            times.push(timeString);
+          }
+          return times;
+        }
+
+        $(document).on("click", ".date-button", function () {
+          $("#confirmation-form").show();
+          $(".selected-time").text($(this).text());
+          const selectedDate = $("#selected-date").text();
+          $("#selected_date_display").val(selectedDate); // Menggunakan .val() untuk mengatur nilai input
+          const selectedTime = $(this).text();
+          $("#selected_time_display").val(selectedTime); // Menggunakan .val() untuk mengatur nilai input
+          
+          $('html, body').animate({
+            scrollTop: $("#confirmation-form").offset().top
+          }, 500);
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var alertMessage = "{{ alert_message }}";
+      if (alertMessage) {
+          alert(alertMessage);
+      }
+  });
+
+    </script>
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar start -->
+    {% include "headerBooking.html" %}
+    <!-- Navbar end -->
+
+    <!-- Hero section start -->
+    <div
+      id="calendar-container"
+      class="container mx-auto px-8 py-12 md:px-16 lg:px-40 xl:px-64"
+    >
+      <div id="calendar" class="bg-white p-4 rounded-lg shadow-md"></div>
+      <div id="button-container">
+        <h2>Waktu Tersedia</h2>
+        <!-- Judul -->
+        <div class="selected-date" id="selected-date"></div>
+        <!-- Hari dan Tanggal -->
+        <div class="time-grid"></div>
+        <!-- Tombol-tombol waktu -->
+      </div>
+    </div>
+    <!-- Hero section end -->
+
+    <!-- Confirmation section start -->
+    <section id="confirmation-form" style="display: none">
+      <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md confirmation-form">
+          <h2 class="text-xl font-semibold mb-4">Detail Pemesanan</h2>
+          <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+            <div>
+              <label for="fullname" class="block text-gray-600">Nama Lengkap:</label>
+              <span id="fullname" class="text-gray-800">{{ fullname }}</span>
+            </div>
+            <div>
+              <label for="phone_number" class="block text-gray-600">Nomor Telepon:</label>
+              <span id="phone_number" class="text-gray-800">{{ phone_number }}</span>
+            </div>
+            <div>
+              <label for="email" class="block text-gray-600">Email:</label>
+              <span id="email" class="text-gray-800">{{ email }}</span>
+            </div>
+            <div>
+              <label for="selected_date" class="block text-gray-600">Hari / Tanggal:</label>
+              <input id="selected_date_display" class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_date" readonly>
+            </div>
+            <div>
+              <label for="selected_time" class="block text-gray-600">Jam:</label>
+              <input id="selected_time_display" class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_time" readonly>
+            </div>
+            <div>
+              <label class="block text-gray-600">Jenis Lapangan:</label>
+              <input class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_sport" value="{{ dataLapangan[0].jenis }}" readonly>
+            </div>
+            <div>
+              <label class="block text-gray-600">Lapangan Berapa:</label>
+              <input class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_court" value="{{ dataLapangan[0].nama }}" readonly>
+            </div>
+            <div>
+              <label class="block text-gray-600">Harga Lapangan:</label>
+              <input class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_price" value="Rp. {{ dataLapangan[0].harga }}" readonly>
+            </div>
+            <div class="mt-4 md:col-span-2">
+              <button id="confirmPaymentBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full transition-transform transform hover:scale-105" type="submit">Konfirmasi Pembayaran</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- Confirmation section end -->
+  </body>
+</html>

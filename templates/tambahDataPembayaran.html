@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Page | Gor Sinta</title>
+    <link href="./static/src/output.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // jQuery script to toggle sidebar for mobile screens
+        $(document).ready(function () {
+            $('#sidebar-toggle').click(function () {
+                $('.lg\\:block').toggle();
+            });
+        });
+    </script>
+</head>
+<body class="bg-gray-100">
+
+{% include "asideAdmin.html" %}
+
+<!-- Form untuk menambahkan data lapangan -->
+<div class="container mx-auto px-4 py-10">
+    <form method="POST" enctype="multipart/form-data" class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+        <div class="mb-6">
+            <label for="jenis_pembayaran" class="block text-sm font-medium text-gray-700">Jenis Pembayaran</label>
+            <input type="text" id="jenis_pembayaran" name="jenis_pembayaran" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="mb-6">
+            <label for="nomor_pembayaran" class="block text-sm font-medium text-gray-700">Nomor Pembayaran</label>
+            <input type="text" id="nomor_pembayaran" name="nomor_pembayaran" accept=".png,.jpg,.jpeg" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        </div>
+        <div class="flex justify-end">
+            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Tambah</button>
+        </div>
+    </form>
+</div>
+<!-- form admin end -->
+
+</body>
+</html>

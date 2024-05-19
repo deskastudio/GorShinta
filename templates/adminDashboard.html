@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Page | Gor Sinta</title>
+    <link href="./static/src/output.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+    <script>
+        // jQuery script to toggle sidebar for mobile screens
+        $(document).ready(function () {
+            $('#sidebar-toggle').click(function () {
+                $('.lg\\:block').toggle();
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                selectable: true,
+                dateClick: function(info) {
+                    // Remove any existing forms
+                    $('.booking-form').remove();
+                    // Create new form below clicked date
+                    const formHTML = `
+                        <form class="booking-form mt-4 px-4 py-2 bg-blue-100 rounded shadow-md">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Name:</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" name="name" type="text">
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email:</label>
+                                <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" name="email" type="email">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    `;
+                    $(formHTML).insertAfter($(info.dayEl).closest('.fc-daygrid-day'));
+                }
+            });
+            calendar.render();
+        });
+        
+      </script>
+  </head>
+  <body class="bg-gray-100">
+
+    {% include "asideAdmin.html" %}
+        <!-- form tanggal start -->
+        <div class="container mx-auto px-4 py-10 max-h-screen md:px-16 lg:px-4 xl:px-64 relative">
+            <div id='calendar' class="mt-6"></div>
+        </div>
+        <!-- form tanggal end -->
+    </aside>
+    <!-- sidebar end  -->
+
+    
+
+    <!-- hero section start -->
+    
+    <!-- hero section end -->
+
+  </body>
+</html>

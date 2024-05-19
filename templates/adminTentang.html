@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Page | Gor Sinta</title>
+    <link href="./static/src/output.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // jQuery script to toggle sidebar for mobile screens
+        $(document).ready(function () {
+            $('#sidebar-toggle').click(function () {
+                $('.lg\\:block').toggle();
+            });
+        });
+    </script>
+  </head>
+  <body class="bg-gray-100">
+
+    {% include "asideAdmin.html" %}
+        <!-- form admin start -->
+        <div class="">
+            <section class="container px-8 py-10 mx-auto">
+                <div class="sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <div class="flex items-center gap-x-3">
+                            <h2 class="text-lg font-medium text-gray-800 dark:text-white">Tentang Lapangan</h2>
+            
+                            <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">Gor Shinta</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="flex flex-col mt-6">
+                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                            <section class="container px-4 py-4 mx-auto">
+                                <div class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm">
+                                    <form action="/tentang" method="POST" class="-my-3 divide-y divide-gray-100 text-sm">
+                                        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                                            <dt class="font-medium text-gray-900">Judul </dt>
+                                            <dd class="text-gray-700 sm:col-span-2">
+                                                <input type="text" id="textInput" name="judul_admin" class="border border-gray-300 rounded px-3 py-2 w-full" value="{{ data_tentang.judul_admin if data_tentang else '' }}">
+                                            </dd>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                                            <dt class="font-medium text-gray-900">Deskripsi</dt>
+                                            <dd class="text-gray-700 sm:col-span-2">
+                                                <textarea id="ddeskripsiInput" name="deskripsi_admin" class="border border-gray-300 rounded px-3 py-2 w-full">{{ data_tentang.deskripsi_admin if data_tentang else '' }}</textarea>
+                                            </dd>
+                                        </div>
+                                        
+                                        <div class="flex justify-end mt-4 gap-3">
+                                            <button type="submit" class="group flex items-center gap-4 rounded-lg border border-red-600 bg-red-600 px-5 py-3 transition-colors hover:bg-transparent focus:outline-none focus:ring">
+                                                <span class="font-medium text-white transition-colors group-hover:text-red-600 group-active:text-red-500">
+                                                    Update
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                  </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- form admin end -->
+    </aside>
+    <!-- sidebar end  -->
+
+    
+
+    <!-- hero section start -->
+    
+    <!-- hero section end -->
+
+  </body>
+</html>
