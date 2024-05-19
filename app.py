@@ -251,6 +251,7 @@ def selectTime(_id):
 @app.route('/payment', methods=['GET', 'POST'])
 @login_required
 def payment():
+    dataPembayaran = list(db.dataPembayaran.find({}))
     fullname = session.get('fullname')
     booking_data = session.get('booking_data')
     alert_message = session.pop('alert_message', 'Silahkan pilih metode pembayaran.')
@@ -294,7 +295,7 @@ def payment():
         session['alert_message'] = 'Pembayaran Berhasil! Terimakasih sudah ingin bermain di Gor Sinta.'
         return redirect(url_for('index'))
     
-    return render_template('payment.html', fullname=fullname, booking_data=booking_data, alert_message=alert_message)
+    return render_template('payment.html', fullname=fullname, booking_data=booking_data, alert_message=alert_message, dataPembayaran=dataPembayaran)
 
 @app.route('/gallery')
 def gallery():
@@ -476,9 +477,10 @@ def review():
     dataReview = list(db.dataReview.find({}))
     return render_template('adminReview.html', dataReview=dataReview)
 
-@app.route('/pengaturan')
-def pengaturan():
-    return render_template('adminPengaturan.html')
+@app.route('/adminDataAkun', methods=['GET'])
+def admin_data_akun():
+    admin = list(db.dataAdmin.find({}))
+    return render_template('adminDataAkun.html', admin=admin)
 
 @app.route('/adminDataPemesanan')
 def admin_data_pemesanan():
@@ -570,6 +572,11 @@ def buat_laporan_pemesanan():
     response.headers['Content-Type'] = 'application/pdf'
     
     return response
+
+@app.route('/hapusSemuaDataRiwayatPemesanan', methods=["GET", "POST"])
+def delete_all_data_pemesanan():
+    db.riwayatPemesanan.delete_many({})
+    return redirect(url_for('admin_riwayat_pemesanan'))
 
 @app.route('/selesaikanPemesanan/<string:_id>', methods=['POST'])
 def selesaikan_pemesanan(_id):

@@ -15,26 +15,25 @@
 <!-- navbar end  -->
 
 <!-- hero section start -->
-<h1 class="text-center text-5xl font-bold text-gray-700">Saatnya Pembayaran</h1>
 <section>
     <div class="container mx-auto px-4 py-8">
-        <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-semibold mb-4">Pembayaran</h2>
+        <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold mb-6 text-center">Pembayaran</h2>
             <form method="POST" enctype="multipart/form-data">
-                <div class="mb-4">
-                    <label class="block text-gray-600 mb-2">Pilih Jenis Pembayaran:</label>
-                    <div>
-                        <input type="radio" id="online_payment" name="payment_type" value="online">
-                        <label for="online_payment">Pembayaran Online</label>
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Pilih Jenis Pembayaran:</label>
+                    <div class="flex items-center mb-4">
+                        <input type="radio" id="online_payment" name="payment_type" value="online" class="mr-2">
+                        <label for="online_payment" class="text-gray-600">Pembayaran Online</label>
                     </div>
-                    <div>
-                        <input type="radio" id="offline_payment" name="payment_type" value="offline">
-                        <label for="offline_payment">Pembayaran Offline</label>
+                    <div class="flex items-center">
+                        <input type="radio" id="offline_payment" name="payment_type" value="offline" class="mr-2">
+                        <label for="offline_payment" class="text-gray-600">Pembayaran Offline</label>
                     </div>
                 </div>
-                <div class="mb-4" id="online_payment_form" style="display:none;">
-                    <label for="payment_method" class="block text-gray-600 mb-2">Pilih Metode Pembayaran:</label>
-                    <select name="payment_method" id="payment_method" class="block w-full px-4 py-2 mt-1 rounded-md">
+                <div class="mb-6" id="online_payment_form" style="display:none;">
+                    <label for="payment_method" class="block text-gray-700 font-medium mb-2">Pilih Metode Pembayaran:</label>
+                    <select name="payment_method" id="payment_method" class="block w-full px-4 py-2 mt-1 border rounded-md">
                         <option value="cod" selected>Pembayaran langsung di tempat (COD)</option>
                         <option value="dana">DANA</option>
                         <option value="ovo">OVO</option>
@@ -43,24 +42,22 @@
                         <option value="bca">Bank BCA</option>
                         <option value="mandiri">Bank Mandiri</option>
                     </select>
-                    <div class="mb-4">
-                        <label for="amount" class="block text-gray-600 mb-2">Masukkan Foto Bukti Pembayaran:</label>
-                        <input type="file" name="payment_proof" id="payment_proof" class="block w-full px-4 py-2 mt-1 rounded-md">
+                    <div class="mt-4">
+                        <label for="amount" class="block text-gray-700 font-medium mb-2">Masukkan Foto Bukti Pembayaran:</label>
+                        <input type="file" name="payment_proof" id="payment_proof" class="block w-full px-4 py-2 mt-1 border rounded-md">
                     </div>
-                    <div class="mt-4 mb-4">
-                        <label class="block text-gray-600 mb-2">Nomor Rekening:</label>
-                        <ul class="list-disc list-inside text-gray-600">
-                            <li>DANA: 081316195586</li>
-                            <li>OVO: 081316195586</li>
-                            <li>ShopeePay: 081316195586</li>
-                            <li>GoPay: 081316195586</li>
-                            <li>Bank Mandiri: 1550011506808</li>
-                            <li>Bank BCA: 7641677551</li>
-                        </ul>
+                    <div class="mt-4">
+                        <label class="block text-gray-700 font-medium mb-2">Nomor Rekening:</label>
+                        <div class="grid grid-cols-2 gap-4 text-gray-600">
+                            {% for data in dataPembayaran %}
+                            <div>{{ data.jenis_pembayaran }}</div>
+                            <div>: {{ data.nomor_pembayaran }}</div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" id="payButton">Bayar</button>
+                <div class="mt-6">
+                    <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" id="payButton">Bayar</button>
                 </div>
             </form>
         </div>
@@ -69,39 +66,39 @@
 <!-- hero section end -->
 
 <!-- Script untuk menampilkan/menyembunyikan formulir pembayaran online/offline -->
-<script>$(document).ready(function(){
-    $('input[type="radio"]').click(function(){
-        if($(this).attr("id")=="online_payment"){
-            $("#online_payment_form").show();
-            $("#offline_payment_form").hide();
-            $("#payment_method").prop('required', true);
-            $("#payment_proof").prop('required', true);
-            // Sembunyikan opsi COD saat pembayaran online dipilih
-            $("#payment_method option[value='cod']").prop('disabled', true);
-            // Pilih opsi pertama selain COD saat pembayaran online dipilih
-            $("#payment_method option:not([value='cod']):first").prop('selected', true);
-        }
-        if($(this).attr("id")=="offline_payment"){
-            $("#offline_payment_form").show();
-            $("#online_payment_form").hide();
-            $("#payment_method").prop('required', false);
-            $("#payment_proof").prop('required', false);
-            // Tampilkan kembali opsi COD saat pembayaran offline dipilih
-            $("#payment_method option[value='cod']").prop('disabled', false);
-            // Pilih opsi COD sebagai default saat pembayaran offline dipilih
-            $("#payment_method option[value='cod']").prop('selected', true);
-        }
-    });
-});
-
-
-    document.addEventListener('DOMContentLoaded', function() {
-            var alertMessage = "{{ alert_message }}";
-            if (alertMessage) {
-                alert(alertMessage);
+<script>
+    $(document).ready(function(){
+        $('input[type="radio"]').click(function(){
+            if($(this).attr("id")=="online_payment"){
+                $("#online_payment_form").show();
+                $("#offline_payment_form").hide();
+                $("#payment_method").prop('required', true);
+                $("#payment_proof").prop('required', true);
+                // Sembunyikan opsi COD saat pembayaran online dipilih
+                $("#payment_method option[value='cod']").prop('disabled', true);
+                // Pilih opsi pertama selain COD saat pembayaran online dipilih
+                $("#payment_method option:not([value='cod']):first").prop('selected', true);
+            }
+            if($(this).attr("id")=="offline_payment"){
+                $("#offline_payment_form").show();
+                $("#online_payment_form").hide();
+                $("#payment_method").prop('required', false);
+                $("#payment_proof").prop('required', false);
+                // Tampilkan kembali opsi COD saat pembayaran offline dipilih
+                $("#payment_method option[value='cod']").prop('disabled', false);
+                // Pilih opsi COD sebagai default saat pembayaran offline dipilih
+                $("#payment_method option[value='cod']").prop('selected', true);
             }
         });
-    </script>
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var alertMessage = "{{ alert_message }}";
+        if (alertMessage) {
+            alert(alertMessage);
+        }
+    });
+</script>
 
 </body>
 </html>
