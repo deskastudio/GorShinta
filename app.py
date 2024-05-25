@@ -42,6 +42,7 @@ dataKontak_collection = db.dataKontak
 dataTentang_collection = db.dataTentang
 dataReview_collection = db.dataReview
 dataPembayaran_collection = db.dataPembayaran
+dataAdmin_collection = db.dataAdmin
 
 UPLOAD_FOLDER = '/static'  # Ganti dengan path folder upload Anda
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}  # Ekstensi file yang diizinkan
@@ -353,11 +354,54 @@ def badminton():
     check_login_time()  # Panggil fungsi untuk memeriksa waktu login
     return render_template('badminton.html', fullname=user_fullname)
 
-@app.route('/datadiri')
+
+@app.route('/datadiri', methods=['GET', 'POST'])
 @login_required
 def datadiri():
+    if request.method == 'POST':
+        fullname = request.form.get('fullname')
+        email = request.form.get('email')
+        phone_number = request.form.get('phone_number')
+        alamat = request.form.get('alamat')
+        foto = request.files.get('foto')
+
+        # Temukan pengguna di database untuk mendapatkan informasi foto saat ini
+        user = users_collection.find_one({'_id': ObjectId(session['user_id'])})
+        old_foto_path = user.get('foto')
+
+        update_data = {
+            'fullname': fullname,
+            'email': email,
+            'phone_number': phone_number,
+            'alamat': alamat,
+            'foto': foto.filename
+        }
+
+        if foto:
+            nama_file_asli = foto.filename
+            nama_file_foto = secure_filename(nama_file_asli)
+            file_path = f'./static/img/imgProfile/{nama_file_foto}'
+            foto.save(file_path)
+        else:
+            nama_file_foto = None
+
+            # Hapus foto lama jika ada
+            if old_foto_path and os.path.exists(old_foto_path):
+                os.remove(old_foto_path)
+        
+        users_collection.update_one(
+            {'_id': ObjectId(session['user_id'])},
+            {'$set': update_data}
+        )
+
+        flash('Profil berhasil diperbarui')
+        return redirect(url_for('datadiri'))
+
     user_fullname = session.get('fullname')
-    return render_template('dataDiri.html', fullname=user_fullname)
+    users = users_collection.find_one({'_id': ObjectId(session['user_id'])})
+
+    return render_template('dataDiri.html', fullname=user_fullname, users=users)
+
 
 @app.route('/adminOrders')
 def admin_orders():
@@ -481,6 +525,48 @@ def review():
 def admin_data_akun():
     admin = list(db.dataAdmin.find({}))
     return render_template('adminDataAkun.html', admin=admin)
+
+@app.route('/tambahDataAdmin', methods=['GET', 'POST'])
+def tambah_data_admin():
+    if request.method == 'GET':
+        return render_template('tambahDataAdmin.html')
+    else:
+        username = request.form['username']
+        password1 = request.form['password1'].encode('utf-8')
+        password2 = request.form['password2'].encode('utf-8')
+        hash_password = bcrypt.hashpw(password1, bcrypt.gensalt())
+        
+        if not username or not password1 or not password2:
+            flash('Please fill in all fields')
+            return redirect(url_for('tambah_data_admin'))
+        
+        if len(password1) < 8:
+            flash('Password must be at least 8 characters long')
+            return redirect(url_for('tambah_data_admin'))
+
+        if password1 != password2:
+            flash('Passwords do not match')
+            return redirect(url_for('tambah_data_admin'))
+
+        if users_collection.find_one({'username': username}): 
+            flash('Email already exists')
+            return redirect(url_for('tambah_data_admin'))
+        
+        new_user = {
+            'username': username,
+            'password': hash_password
+        }
+
+        user_id = dataAdmin_collection.insert_one(new_user).inserted_id
+        set_login_time()
+        session['user_id'] = str(user_id)
+        session['fullname'] = username
+        return redirect(url_for('admin_data_akun'))
+    
+@app.route('/hapusDataAdmin/<string:_id>', methods=["GET", "POST"])
+def delete_data_admin(_id):
+    db.dataAdmin.delete_one({'_id': ObjectId(_id)})
+    return redirect(url_for('admin_data_akun'))
 
 @app.route('/adminDataPemesanan')
 def admin_data_pemesanan():
@@ -697,6 +783,62 @@ def admin_data_user():
     users = list(users_collection.find({}))
     return render_template('adminDataUser.html', users=users)
 
+@app.route('/tambahDataPelanggan', methods=['GET', 'POST'])
+def tambah_data_pelanggan():
+    if request.method == 'GET':
+        return render_template('tambahDataPelanggan.html')
+    else:
+        fullname = request.form['fullname']
+        phone_number = request.form['phone_number']
+        email = request.form['email']
+        password1 = request.form['password1'].encode('utf-8')
+        password2 = request.form['password2'].encode('utf-8')
+        hash_password = bcrypt.hashpw(password1, bcrypt.gensalt())
+        
+        if not fullname or not phone_number or not email or not password1 or not password2:
+            flash('Please fill in all fields')
+            return redirect(url_for('tambah_data_pelanggan'))
+        
+        if len(password1) < 8:
+            flash('Password must be at least 8 characters long')
+            return redirect(url_for('tambah_data_pelanggan'))
+        
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            flash('Invalid email address')
+            return redirect(url_for('tambah_data_pelanggan'))
+        
+        if not re.match(r'^\+?1?\d{9,15}$', phone_number):
+            flash('Invalid phone number')
+            return redirect(url_for('tambah_data_pelanggan'))
+
+        if password1 != password2:
+            flash('Passwords do not match')
+            return redirect(url_for('tambah_data_pelanggan'))
+
+        if users_collection.find_one({'email': email}): 
+            flash('Email already exists')
+            return redirect(url_for('tambah_data_pelanggan'))
+        
+        new_user = {
+            'fullname': fullname,
+            'phone_number': phone_number,
+            'email': email,
+            'password': hash_password
+        }
+
+        user_id = users_collection.insert_one(new_user).inserted_id
+        set_login_time()
+        session['user_id'] = str(user_id)
+        session['email'] = email
+        session['fullname'] = fullname
+        session['phone_number'] = phone_number
+        return redirect(url_for('admin_data_user'))
+
+@app.route('/hapusDataPelanggan/<string:_id>', methods=["GET", "POST"])
+def delete_data_pelanggan(_id):
+    db.users.delete_one({'_id': ObjectId(_id)})
+    return redirect(url_for('admin_data_user'))
+
 @app.route('/adminPembayaran', methods=['GET'])
 def admin_pembayaran():
     pembayaran = list(dataPembayaran_collection.find({}))
@@ -738,8 +880,32 @@ def edit_data_pembayaran(_id):
 
 
 # LOGIN SEBAGAI ADMIN
+@app.route('/adminLogin', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
+        user = dataAdmin_collection.find_one({'username': username})
 
+        if user is not None and len(user) > 0:
+            if bcrypt.checkpw(password.encode('utf-8'), user['password']):
+                user_obj = User()
+                user_obj.id = str(user['_id'])
+                login_user(user_obj)
+                
+                return redirect(url_for('admin_data_lapangan'))
+            
+            else:
+                flash("Invalid email or password")
+                return redirect(url_for('admin_login'))
+            
+        else:
+            flash("Invalid email or password")
+            return redirect(url_for('admin_login'))
+        
+    else:
+        return render_template('adminLogin.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

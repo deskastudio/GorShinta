@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div>
-                        <a href="/tambahDataLapanganFutsal" class="text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 focus:outline-none px-5 py-2.5 rounded-lg shadow-lg transform transition-transform hover:scale-105">Tambah Admin</a>
+                        <a href="/tambahDataAdmin" class="text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 focus:outline-none px-5 py-2.5 rounded-lg shadow-lg transform transition-transform hover:scale-105">Tambah Admin</a>
                     </div>
                 </div>
             
@@ -44,60 +44,28 @@
                                         <tr>
                                             <th scope="col" class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                                 <button class="flex items-center gap-x-3 focus:outline-none">
-                                                    <span>Jenis Lapangan</span>
+                                                    <span>Username</span>
                                                 </button>
                                             </th>
-            
-                                            <th scope="col" class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                Foto
-                                            </th>
-            
-                                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                Harga
-                                            </th>
-            
-                                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                Nama Lapangan
+                                            <th scope="col" class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                                <button class="flex items-center gap-x-3 focus:outline-none">
+                                                    Tindakan
+                                                </button>
                                             </th>
 
-                                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                Deskripsi
-                                            </th>
-                                            
-                                            <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                                Tindakan
-                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                                        {% for data in dataLapangan %}
+                                        {% for data in admin %}
                                         <tr>
                                             <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                                                 <div>
-                                                    <h2>{{ data.jenis }}</h2>
+                                                    <h2>{{ data.username }}</h2>
                                                 </div>
-                                            </td>
-                                            <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                                <div>
-                                                    <img src="../static/img/{{data.foto}}" alt="" width="70px">
-                                                </div>
-                                            </td>
-                                            <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                <div>
-                                                    <h4>Rp. {{ data.harga }}</h4>
-                                                </div>
-                                            </td>
-                                            <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                <h2>{{ data.nama }}</h2>
-                                            </td>
-
-                                            <td class="px-4 py-4 text-sm whitespace-nowrap">
-                                                <h2>{{ data.deskripsi }}</h2>
                                             </td>
 
                                             <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                                                <button class="text-indigo-600 hover:text-indigo-900 mr-2" onclick="window.location.href='/editDataLapanganFutsal/{{data._id}}'">Edit</button>
-                                                <button class="text-red-600 hover:text-red-900" onclick="window.location.href='/hapusDataLapanganFutsal/{{data._id}}'">Hapus</button>
+                                                <button class="text-red-600 hover:text-red-900" onclick="window.location.href='/hapusDataAdmin/{{data._id}}'">Hapus</button>
                                             </td>
                                         </tr>   
                                         {% endfor %}

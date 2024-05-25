@@ -28,7 +28,7 @@
             </div>
         </div>
         <div>
-            <a href="/tambahDataLapanganFutsal" class="text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 focus:outline-none px-5 py-2.5 rounded-lg shadow-lg transform transition-transform hover:scale-105">Tambah Pelanggan</a>
+            <a href="/tambahDataPelanggan" class="text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 focus:outline-none px-5 py-2.5 rounded-lg shadow-lg transform transition-transform hover:scale-105">Tambah Pelanggan</a>
         </div>
     </div>
 
@@ -44,7 +44,6 @@
                                         <span>Fullname</span>
                                     </button>
                                 </th>
-                                <th scope="col" class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Foto</th>
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">No. Handphone</th>
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Email</th>
                                 <th scope="col" class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">Alamat</th>
@@ -59,11 +58,6 @@
                                         <h2>{{ data.fullname }}</h2>
                                     </div>
                                 </td>
-                                <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
-                                    <div>
-                                        <img src="../static/img/{{data.foto}}" alt="" width="70px">
-                                    </div>
-                                </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div>
                                         <h4>{{ data.phone_number }}</h4>
@@ -76,8 +70,7 @@
                                     <h2>{{ data.alamat }}</h2>
                                 </td>
                                 <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                                    <button class="text-indigo-600 hover:text-indigo-900 mr-2" onclick="window.location.href='/editDataLapanganFutsal/{{data._id}}'">Edit</button>
-                                    <button class="text-red-600 hover:text-red-900" onclick="window.location.href='/hapusDataLapanganFutsal/{{data._id}}'">Hapus</button>
+                                    <button class="text-red-600 hover:text-red-900" onclick="window.location.href='/hapusDataPelanggan/{{data._id}}'">Hapus</button>
                                 </td>
                             </tr>   
                             {% endfor %}

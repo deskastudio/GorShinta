@@ -1,115 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data Diri | Gor Sinta</title>
-    <link href="./static/src/output.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Page | Gor Sinta</title>
+    <link href="./static/src/output.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  
-  </head>
-  <body class="bg-gray-100">
+    <script>
+        function previewPhoto(input) {
+            var preview = document.getElementById('photoPreview');
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function() {
+                preview.src = reader.result;
+                preview.style.display = 'block'; // Tampilkan pratinjau foto
+            }
+
+            if (file) {
+                reader.readAsDataURL(file); // Baca file sebagai URL data
+            } else {
+                preview.src = ''; // Kosongkan pratinjau jika tidak ada file yang dipilih
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
 
     <!-- navbar start -->
     {% include "headerBooking.html" %}
     <!-- navbar end  -->
 
     <!-- hero section start -->
-   <section class="container px-40 py-10 mx-auto">
-    <h1 class="text-5xl font-bold text-gray-900 text-center pb-10">My Profile</h1>
-    <div class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm">
-        <dl class="-my-3 divide-y divide-gray-100 text-sm">
-            <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-                <dt class="font-medium text-gray-900">Photo</dt>
-                <dd class="text-gray-700 sm:col-span-2">
-                    <label for="photoInput" class="cursor-pointer inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Choose Photo</label>
-                    <input type="file" id="photoInput" class="hidden">
-                </dd>
+    <section class="container px-40 py-10 mx-auto">
+        <h1 class="text-5xl font-bold text-gray-900 text-center pb-10">Profile Saya</h1>
+        <form action="/datadiri" method="POST" enctype="multipart/form-data" class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm">
+            <dl class="-my-3 divide-y divide-gray-100 text-sm">
+                <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                    <dt class="font-medium text-gray-900">Photo</dt>
+                    <dd class="text-gray-700 sm:col-span-2">
+                        <label for="photoInput" class="cursor-pointer inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Choose Photo</label>
+                        <input name="foto" type="file" id="photoInput" class="hidden" onchange="previewPhoto(this)">
+                        <img id="photoPreview" src="#" alt="Photo Preview" style="display: none; max-width: 100%; height: auto;" width="200px" class="py-4">
+                    </dd>
+                </div>
+                <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                    <dt class="font-medium text-gray-900">Nama Lengkap</dt>
+                    <dd class="text-gray-700 sm:col-span-2">
+                        <input type="text" id="fullname" name="fullname" class="border border-gray-300 rounded px-3 py-2 w-full" value="{{ users.fullname if users else '' }}">
+                    </dd>
+                </div>
+                <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                    <dt class="font-medium text-gray-900">Email</dt>
+                    <dd class="text-gray-700 sm:col-span-2">
+                        <input type="email" id="email" name="email" class="border border-gray-300 rounded px-3 py-2 w-full" value="{{ users.email if users else '' }}">
+                    </dd>
+                </div>
+                <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                    <dt class="font-medium text-gray-900">No. Handphone</dt>
+                    <dd class="text-gray-700 sm:col-span-2">
+                        <input type="tel" id="phone_number" name="phone_number" class="border border-gray-300 rounded px-3 py-2 w-full" value="{{ users.phone_number if users else '' }}">
+                    </dd>
+                </div>
+                <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                    <dt class="font-medium text-gray-900">Alamat</dt>
+                    <dd class="text-gray-700 sm:col-span-2">
+                        <textarea id="alamat" name="alamat" class="border border-gray-300 rounded px-3 py-2 w-full">{{ users.alamat if users else '' }}</textarea>
+                    </dd>
+                </div>
+            </dl>
+            <div class="flex justify-end mt-4 gap-3">
+                <button type="submit" class="group flex items-center gap-4 rounded-lg border border-red-600 bg-red-600 px-5 py-3 transition-colors hover:bg-transparent focus:outline-none focus:ring">
+                    <span class="font-medium text-white transition-colors group-hover:text-red-600 group-active:text-red-500">Update Profile</span>
+                </button>
             </div>
-          <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-            <dt class="font-medium text-gray-900">First Name</dt>
-            <dd class="text-gray-700 sm:col-span-2">Deska</dd>
-          </div>
-      
-          <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-            <dt class="font-medium text-gray-900">Last Name</dt>
-            <dd class="text-gray-700 sm:col-span-2">Mulyana</dd>
-          </div>
-      
-          <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-            <dt class="font-medium text-gray-900">Email</dt>
-            <dd class="text-gray-700 sm:col-span-2">deskamulyana47@gmail.com</dd>
-          </div>
-      
-          <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-            <dt class="font-medium text-gray-900">Phone</dt>
-            <dd class="text-gray-700 sm:col-span-2">081316195586</dd>
-          </div>
-      
-          <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-            <dt class="font-medium text-gray-900">Address</dt>
-            <dd class="text-gray-700 sm:col-span-2">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et facilis debitis explicabo
-              doloremque impedit nesciunt dolorem facere, dolor quasi veritatis quia fugit aperiam
-              aspernatur neque molestiae labore aliquam soluta architecto?
-            </dd>
-          </div>
-
-          <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-            <dt class="font-medium text-gray-900">Total Booking</dt>
-            <dd class="text-gray-700 sm:col-span-2">13</dd>
-          </div>
-        </dl>
-      </div>
-
-      <div class="flex justify-end mt-4 gap-3">
-        <a id="changePasswordBtn" class="group flex items-center gap-4 rounded-lg border border-red-600 bg-red-600 px-5 py-3 transition-colors hover:bg-transparent focus:outline-none focus:ring" href="#">
-            <span class="font-medium text-white transition-colors group-hover:text-red-600 group-active:text-red-500">
-                Change Password
-            </span>
-        </a>
-        <a class="group flex items-center gap-4 rounded-lg border border-current px-5 py-3 text-red-600 transition-colors hover:bg-red-600 focus:outline-none focus:ring active:bg-red-500" href="#">
-            <span class="font-medium transition-colors group-hover:text-white"> Edit </span>
-        </a>
-    </div>
-   </section>
+        </form>
+    </section>
     <!-- hero section end -->
 
-    <!-- Script to handle Change Password button click -->
-<script>
-    $(document).ready(function () {
-        $("#changePasswordBtn").click(function (e) {
-            e.preventDefault(); // Prevent the default behavior of the button
-
-            // Prompt user for old password, new password, and confirm new password
-            var password_lama = prompt("Masukkan password lama:");
-            var password_baru = prompt("Masukkan password baru:");
-            var konfirmasi_password_baru = prompt("Konfirmasi password baru:");
-
-            // Send AJAX request to server to change password
-            $.ajax({
-                type: "POST",
-                url: "/change_password",
-                data: {
-                    password_lama: password_lama,
-                    password_baru: password_baru,
-                    konfirmasi_password_baru: konfirmasi_password_baru
-                },
-                success: function (response) {
-                    // Handle success response
-                    alert(response.message);
-                },
-                error: function (xhr, status, error) {
-                    // Handle error response
-                    alert("Error: " + xhr.responseText);
-                }
-            });
-        });
-    });
-</script>
-
-    
-
-
-  </body>
+</body>
 </html>
