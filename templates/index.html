@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page | Gor Sinta</title>
-    <link href="./static/src/output.css" rel="stylesheet" />
+    <link href="../static/src/output.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
@@ -74,61 +74,71 @@
       {% include "header.html" %}
       <!-- header end -->
 
-    <!-- hero section start -->
-  <section class="bg-cover bg-center min-h-screen" style="background-image: url('./static/img/sportContoh.png')">
-    <div class="mx-auto max-w-screen-xl px-4 py-32 lg:-mt-20 lg:flex lg:h-screen lg:items-center">
-      <!-- Your content here -->
+      <!-- hero section start -->
+  <section class="bg-cover bg-center" style="background-image: url('./static/img/homepage.png')">
+    <div class="mx-auto max-w-screen-xl px-4 py-32 lg:-mt-20 md:-mt-20 sm:-mt-20 lg:flex lg:h-screen lg:items-center md:flex md:h-screen md:items-center sm:flex sm:h-screen sm:items-center">
+      <div class="flex flex-wrap items-center justify-center gap-4 mx-auto container">
+        <div>
+          <img src="./static/img/ssc.png" alt="" width="600">
+        </div>
+        <div>
+          <div class="w-96 carousel rounded-box">
+            <div class="carousel-item w-full">
+              <img src="./static/img/futsal.png" class="w-full" alt="futsal" />
+            </div> 
+            <div class="carousel-item w-full">
+              <img src="./static/img/badminton.png" class="w-full" alt="badminton" />
+            </div> 
+            <div class="carousel-item w-full">
+              <img src="./static/img/futsal.png" class="w-full" alt="futsal" />
+            </div>
+            <div class="carousel-item w-full">
+              <img src="./static/img/badminton.png" class="w-full" alt="badminton" />
+            </div> 
+            <div class="carousel-item w-full">
+              <img src="./static/img/futsal.png" class="w-full" alt="futsal" />
+            </div>  
+          </div>
+        </div>
+      </div>
     </div>
   </section>
   <!-- hero section end -->
 
-    <!-- information section start -->
-    <section class="container mx-auto px-4 py-8">
-      <h1 class="text-center text-5xl">Fasilitas</h1>
-      <div class="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
-        <img src="./static/img/mushola.png" alt="">
-        <img src="./static/img/foodcourt.png" alt="">
-        <img src="./static/img/parking.png" alt="">
-        <img src="./static/img/toilet.png" alt="">
+<!-- information section start -->
+<section class="bg-cover bg-center min-h-screen relative" style="background-image: url('./static/img/fasilitas1.png');">
+  <div class="absolute inset-0"></div>
+  <div class="relative mx-auto max-w-screen-xl px-4 py-32 lg:py-48">
+    <div class="border-4 rounded-3xl border-black bg-deep-orange-300 bg-opacity-50 backdrop-filter backdrop-blur-300 backdrop-blur-sm">
+      <h1 class="text-center text-6xl sm:text-7xl lg:text-7xl font-extrabold mb-12 text-black mt-10 tracking-wide drop-shadow-lg">Fasilitas</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <img  src="./static/img/mushola.png" alt="Mushola">
+        <img  src="./static/img/foodcourt.png" alt="Food Court">
+        <img  src="./static/img/parking.png" alt="Parking">
+        <img  src="./static/img/toilet.png" alt="Toilet">
       </div>
-    </section>
-    <!-- information section end -->
+    </div>
+  </div>
+</section>
+<!-- information section end -->
+
+
+
+
+
 
     <!-- tentang kami section start -->
-    <section class="bg-cover" style="background-image: url('./static/img/tentangKami.png')">
-      <div class="mx-auto max-w-screen-xl px-4 py-32 lg:-mt-20 lg:flex lg:h-screen lg:items-center">
-        <div class="grid grid-cols-1 lg:h-screen lg:grid-cols-2">
-    
-          <div class="relative flex items-center bg-gray-100">
-            <span
-              class="hidden lg:absolute lg:inset-y-0 lg:-start-16 lg:block lg:w-16 lg:bg-gray-100"
-            ></span>
-    
-            <div class="p-8 sm:p-16 lg:p-24">
-              <h2 class="text-2xl font-bold sm:text-3xl">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore, debitis.
-              </h2>
-    
-              <p class="mt-4 text-gray-600">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, molestiae! Quidem est
-                esse numquam odio deleniti, beatae, magni dolores provident quaerat totam eos, aperiam
-                architecto eius quis quibusdam fugiat dicta.
-              </p>
-    
-              <a
-                href="#"
-                class="mt-8 inline-block rounded border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-              >
-                Get in Touch
-              </a>
-            </div>
-          </div>
-          <div class="relative z-10 lg:py-16">
-          </div>
-        </div>
+    <section class="bg-cover" style="background-image: url('./static/img/about.png')">
+      <div class="absolute inset-0"></div>
+  <div class="relative mx-auto max-w-screen-xl px-4 py-32 lg:py-48">
+    <div class="border-4 rounded-3xl border-black bg-black bg-opacity-50 backdrop-filter backdrop-blur-300 backdrop-blur-sm">
+      <h1 class="text-center text-white text-5xl sm:text-6xl lg:text-6xl font-extrabold mb-12 mt-10 tracking-wide drop-shadow-lg">Tentang Kami</h1>
+      <div class="mb-40 mt-10 text-wrap">
+        <p class="text-center text-2xl text-wrap text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas ratione ipsa, nulla, rerum commodi veniam nesciunt sint dolorem doloremque ullam architecto. Aperiam possimus earum, fugit, eveniet rerum error dolor eaque asperiores aut quia deleniti iste accusamus autem ex veritatis. Ratione sequi illum vitae reiciendis assumenda in aspernatur doloremque quos numquam?</p>
       </div>
-
-    </section>
+    </div>
+  </div>
+</section>
     <!-- tentang kami section end -->
 
     <!-- category section start -->
