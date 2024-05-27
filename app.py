@@ -81,8 +81,9 @@ LOGOUT_TIME_SECONDS = 1800  # Contoh: logout otomatis setelah 30 menit tidak akt
 
 @app.route('/')
 def index():
+    dataLapangan = dataLapangan_collection.find({})
     alert_message = session.pop('alert_message', 'Selamat Datang di Gor Shinta semoga Anda senang')
-    return render_template('index.html', alert_message=alert_message)
+    return render_template('index.html', alert_message=alert_message, dataLapangan=dataLapangan)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():

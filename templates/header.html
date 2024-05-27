@@ -1,51 +1,34 @@
-<nav class="block w-full max-w-screen-xl px-4 py-2 mx-auto text-white bg-transparent border shadow-md rounded-xl lg:px-8 lg:py-4">
-    <div class="container flex items-center justify-between mx-auto text-blue-gray-900">
-      <a href="#" class="mr-7 block cursor-pointer py-1.5 font-sans text-base font-semibold leading-relaxed text-inherit antialiased">Gor <span class="text-teal-600">Shinta</span></a>
-      <div class="hidden lg:block">
-        <ul class="flex flex-col gap-2 mt-2 mb-4 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-          <li class="flex items-center p-1 font-sans text-sm antialiased font-medium leading-normal gap-x-2 text-blue-gray-900">
-            <a href="/" class="flex items-center text-xl"> Home </a>
-          </li>
-          <li class="flex items-center p-1 font-sans text-sm antialiased font-medium leading-normal gap-x-2 text-blue-gray-900">
-            <a href="/login" class="flex items-center text-xl"> Booking </a>
-          </li>
-          <li class="flex items-center p-1 font-sans text-sm antialiased font-medium leading-normal gap-x-2 text-blue-gray-900">
-            <a href="/gallery" class="flex items-center text-xl"> Galeri </a>
-          </li>
-          <li class="flex items-center p-1 font-sans text-sm antialiased font-medium leading-normal gap-x-2 text-blue-gray-900">
-            <a href="/facility" class="flex items-center text-xl"> Fasilitas </a>
-          </li>
-          <li class="flex items-center p-1 font-sans text-sm antialiased font-medium leading-normal gap-x-2 text-blue-gray-900">
-            <a href="/facility" class="flex items-center text-xl"> Tentang Kami </a>
-          </li>
-        </ul>
+<div class="navbar bg-transparent container mx-auto">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
       </div>
-      <div class="flex items-center gap-x-1">
-        <button class="hidden px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none hover:bg-gray-900/10 active:bg-gray-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block" onclick="window.location.href = '/register';"
-          type="button">
-          <span>Sign Up</span>
-        </button>
-        <button class="hidden select-none rounded-lg bg-gradient-to-tr from-teal-600 to-gray-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:inline-block" onclick="window.location.href = '/login';"
-          type="button">
-          <span>Sign in</span>
-        </button>
-      </div>
-      <button class="relative ml-auto h-6 max-h-[40px] w-6 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-inherit transition-all hover:bg-transparent focus:bg-transparent active:bg-transparent disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none lg:hidden"
-        type="button">
-        <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>
-          </svg>
-        </span>
-      </button>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 w-52">
+        <li><a href="#">Beranda</a></li>
+        <li><a href="/selectField">Pesan</a></li>
+        <li><a href="#fasilitas">Fasilitas</a></li>
+        <li><a href="#kategori">Kategori</a></li>
+        <li><a href="#tentang">Tentang Kami</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+        <li><a href="#testimoni">Review</a></li>
+      </ul>
     </div>
-  </nav>
+    <a class="btn btn-ghost text-2xl font-bold">Gor <span class="text-teal-600">Shinta</span></a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1 font-semibold text-lg">
+      <li><a href="#">Beranda</a></li>
+        <li><a href="/selectField">Pesan</a></li>
+        <li><a href="#fasilitas">Fasilitas</a></li>
+        <li><a href="#kategori">Kategori</a></li>
+        <li><a href="#tentang">Tentang Kami</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+        <li><a href="#testimoni">Review</a></li>
+    </ul>
+  </div>
+  <div class="navbar-end gap-4">
+    <a class="text-white font-bold py-2 px-4 rounded transition-transform transform duration-300 bg-gradient-to-r from-teal-400 to-gray-800 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2" href="/register">Daftar</a>
+    <a class="text-white font-bold py-2 px-4 rounded transition-transform transform duration-300 bg-gradient-to-r from-red-800 to-gray-800 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2" href="/login">Masuk</a>
+</div>
+</div>
