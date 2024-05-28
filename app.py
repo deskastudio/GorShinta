@@ -82,8 +82,10 @@ LOGOUT_TIME_SECONDS = 1800  # Contoh: logout otomatis setelah 30 menit tidak akt
 @app.route('/')
 def index():
     dataLapangan = dataLapangan_collection.find({})
+    dataGaleri = dataGaleri_collection.find({})
+    dataKontak = dataKontak_collection.find_one()
     alert_message = session.pop('alert_message', 'Selamat Datang di Gor Shinta semoga Anda senang')
-    return render_template('index.html', alert_message=alert_message, dataLapangan=dataLapangan)
+    return render_template('index.html', alert_message=alert_message, dataLapangan=dataLapangan, dataGaleri=dataGaleri, dataKontak=dataKontak)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -171,26 +173,6 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('index'))
-
-@app.route('/change_password', methods=['POST'])
-@login_required
-def change_password():
-    if request.method == 'POST':
-        password_lama = request.form['password_lama']
-        password_baru = request.form['password_baru']
-        konfirmasi_password_baru = request.form['konfirmasi_password_baru']
-
-        user = users_collection.find_one({'email': session['email']})
-        if user and bcrypt.checkpw(password_lama.encode('utf-8'), user['password']):
-            if password_baru == konfirmasi_password_baru:
-                hashed_password_baru = bcrypt.hashpw(password_baru.encode('utf-8'), bcrypt.gensalt())
-                users_collection.update_one({'email': session['email']}, {'$set': {'password': hashed_password_baru}})
-                return redirect(url_for('selectField'))
-            else:
-                flash('Password baru tidak cocok dengan konfirmasi password baru')
-        else:
-            flash('Password lama tidak sesuai')
     return redirect(url_for('index'))
 
 @app.route('/selectField')
@@ -299,63 +281,6 @@ def payment():
     
     return render_template('payment.html', fullname=fullname, booking_data=booking_data, alert_message=alert_message, dataPembayaran=dataPembayaran)
 
-@app.route('/gallery')
-def gallery():
-    return render_template('gallery.html')
-
-@app.route('/facility')
-def facility():
-    return render_template('facility.html')
-
-@app.route('/selectFieldBadminton')
-@login_required
-def selectFieldBadminton():
-    badminton_field = list(db.dataLapangan.find({"jenis": "Badminton"}))
-    fullname = session.get('fullname') 
-    check_login_time()   
-    return render_template('selectFieldBadminton.html', fullname=fullname, badminton_field=badminton_field)
-
-@app.route('/selectTimeBadminton')
-@login_required
-def selectTimeBadminton():
-    fullname = session.get('fullname')
-    check_login_time()   
-    return render_template('selectTimeBadminton.html', fullname=fullname)
-
-@app.route('/confirmationBooking', methods=['GET', 'POST'])
-@login_required
-def confirmation_booking():
-    dataLapangan = list(db.dataLapangan.find({}))
-    fullname = session.get('fullname')
-    phone_number = session.get('phone_number')
-    email = session.get('email')
-    selected_date = request.args.get('date')
-    selected_time = request.args.get('time')
-    selected_sport = request.args.get('jenis')
-    selected_court = request.args.get('nama')
-    selected_price = request.args.get('harga')
-    
-    bookings_collection.insert_one({
-            'fullname': fullname,
-            'phone_number': phone_number,
-            'email': email,
-            'selected_date': selected_date,
-            'selected_time': selected_time,
-            'selected_sport': selected_sport,
-            'selected_court': selected_court,
-            'selected_price': selected_price
-        })
-    
-    return render_template('confirmationBooking.html', fullname=fullname, phone_number=phone_number, email=email, selected_date=selected_date, selected_time=selected_time, selected_sport=selected_sport, selected_court=selected_court, selected_price=selected_price, dataLapangan=dataLapangan)
-
-@app.route('/badminton')
-@login_required
-def badminton():
-    user_fullname = session.get('fullname')
-    check_login_time()  # Panggil fungsi untuk memeriksa waktu login
-    return render_template('badminton.html', fullname=user_fullname)
-
-
 @app.route('/datadiri', methods=['GET', 'POST'])
 @login_required
 def datadiri():
@@ -403,14 +328,6 @@ def datadiri():
 
     return render_template('dataDiri.html', fullname=user_fullname, users=users)
 
-
-@app.route('/adminOrders')
-def admin_orders():
-    return render_template('adminOrders.html')
-
-@app.route('/adminDashboard')
-def admin_dashboard():
-    return render_template('adminDashboard.html')
 
 @app.route('/adminDataLapangan', methods=['GET'])
 def admin_data_lapangan():
@@ -660,6 +577,7 @@ def buat_laporan_pemesanan():
     
     return response
 
+
 @app.route('/hapusSemuaDataRiwayatPemesanan', methods=["GET", "POST"])
 def delete_all_data_pemesanan():
     db.riwayatPemesanan.delete_many({})
@@ -737,7 +655,6 @@ def delete_data_galeri(_id):
     return redirect(url_for('galeri'))
 
 @app.route('/userReviewLapangan')
-@login_required
 def user_review_lapangan():
     fullname = session.get('fullname') 
     email = session.get('email')
@@ -746,7 +663,6 @@ def user_review_lapangan():
     return render_template('reviewLapangan.html', fullname=fullname, email=email, current_date_time=current_date_time)
 
 @app.route('/submitReview', methods=['POST'])
-@login_required
 def submit_review():
     if request.method == 'POST':
         # Ambil data dari formulir
@@ -774,10 +690,6 @@ def submit_review():
 
         # Redirect ke halaman setelah submit
         return redirect(url_for('user_review_lapangan'))
-    
-@app.route('/navbarBaru')
-def navbar_baru():
-    return render_template('navbarBaru.html')
 
 @app.route('/adminDataUser', methods=['GET'])
 def admin_data_user():
@@ -907,6 +819,11 @@ def admin_login():
         
     else:
         return render_template('adminLogin.html')
+    
+@app.route('/adminLogout')
+def admin_logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
