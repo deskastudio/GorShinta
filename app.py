@@ -225,7 +225,7 @@ def selectTime(_id):
         }
         
         # Simpan pesan alert ke sesi
-        session['alert_message'] = 'Berhasil di Pesan'
+        session['alert_message'] = 'Berhasil di pesanan. Silahkan pilih metode pembayaran.'
         
         # Alihkan ke halaman pembayaran
         return redirect(url_for('payment'))

@@ -9,7 +9,9 @@
     <title>Booking Page | Gor Sinta</title>
     <link href="./static/src/output.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script>
         // jQuery script to toggle sidebar for mobile screens
         $(document).ready(function () {
@@ -17,6 +19,23 @@
                 $('.lg\\:block').toggle();
             });
         });
+
+        function confirmDelete(url) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak akan dapat mengembalikan ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            })
+        }
     </script>
   </head>
   <body class="bg-gray-100">
@@ -87,7 +106,7 @@
                                                 <h2>{{ data.tanggal }}</h2>
                                             </td>
                                             <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
-                                                <button class="text-red-600 hover:text-red-900" onclick="window.location.href='/hapusReview/{{data._id}}'">Hapus</button>
+                                                <button class="text-red-600 hover:text-red-900" onclick="confirmDelete('/hapusReview/{{data._id}}')">Hapus</button>
                                             </td>
                                         </tr>   
                                         {% endfor %}

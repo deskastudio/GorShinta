@@ -10,6 +10,7 @@
     <link href="../static/src/output.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body style="background-image: url('./static/img/booking.png')" class="bg-cover bg-center min-h-screen">
 
@@ -106,7 +107,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         var alertMessage = "{{ alert_message }}";
         if (alertMessage) {
-            alert(alertMessage);
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: alertMessage
+            });
         }
     });
 </script>

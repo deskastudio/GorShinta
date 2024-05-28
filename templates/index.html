@@ -10,6 +10,7 @@
     <link href="../static/src/output.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <link href="https://cdn.jsdelivr.net/npm/keen-slider@6.8.6/keen-slider.min.css" rel="stylesheet" />
     <script type="module">
@@ -64,12 +65,16 @@
       };
 
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var alertMessage = "{{ alert_message|safe }}";
-            if (alertMessage) {
-                alert(alertMessage);
-            }
-        });
+      document.addEventListener('DOMContentLoaded', function() {
+        var alertMessage = "{{ alert_message|safe }}";
+        if (alertMessage) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: alertMessage
+            });
+        }
+    });
     </script>
   </head>
   <body>
@@ -244,21 +249,17 @@
         <div class="flex flex-wrap justify-center gap-4">
             <div class="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
               <article class="group">
-                <img
-                  alt=""
-                  src="./static/img/badmintonCard.png"
-                  class="h-90 w-full rounded-xl object-cover shadow-xl transition group-hover:grayscale-[50%]"
-                />
+                <a href="/login">
+                  <img alt="" src="./static/img/badmintonCard.png"class="h-90 w-full rounded-xl object-cover shadow-xl transition group-hover:grayscale-[50%]"/>
+                </a>
               </article>
             </div>
 
             <div class="relative flex w-full max-w-[26rem] flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-lg">
               <article class="group">
-                <img
-                  alt=""
-                  src="./static/img/futsalCard.png"
-                  class="h-90 w-full rounded-xl object-cover shadow-xl transition group-hover:grayscale-[50%]"
-                />
+                <a href="/login">
+                  <img alt="" src="./static/img/futsalCard.png" class="h-90 w-full rounded-xl object-cover shadow-xl transition group-hover:grayscale-[50%]" />
+                </a>
               </article>
             </div>
         </div>
