@@ -439,6 +439,11 @@ def review():
     dataReview = list(db.dataReview.find({}))
     return render_template('adminReview.html', dataReview=dataReview)
 
+@app.route('/hapusReview/<string:_id>', methods=["GET", "POST"])
+def delete_data_review(_id):
+    db.dataReview.delete_one({'_id': ObjectId(_id)})
+    return redirect(url_for('review'))
+
 @app.route('/adminDataAkun', methods=['GET'])
 def admin_data_akun():
     admin = list(db.dataAdmin.find({}))
