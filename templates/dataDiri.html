@@ -7,7 +7,7 @@
     <link href="../static/img/sinta.png" rel="icon" type="image/x-icon" />
 
     <title>Booking Page | Gor Sinta</title>
-    <link href="./static/src/output.css" rel="stylesheet">
+    <link href="../static/src/output.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function previewPhoto(input) {
@@ -26,9 +26,16 @@
                 preview.src = ''; // Kosongkan pratinjau jika tidak ada file yang dipilih
             }
         }
+
+        $(document).ready(function() {
+            var currentPhoto = "{{ users.foto if users else '' }}";
+            if (currentPhoto) {
+                $('#photoPreview').attr('src', '/' + currentPhoto).show();
+            }
+        });
     </script>
 </head>
-<body class="bg-gray-100">
+<body class="bg-cover bg-center min-h-screen" style="background-image: url('./static/img/profile.png')">
 
     <!-- navbar start -->
     {% include "headerBooking.html" %}
@@ -39,7 +46,7 @@
         <h1 class="text-5xl font-bold text-gray-900 text-center pb-10">Profile Saya</h1>
         <form action="/datadiri" method="POST" enctype="multipart/form-data" class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm">
             <dl class="-my-3 divide-y divide-gray-100 text-sm">
-                <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                <div class="grid grid-cols-1 gap-1 p-3 bg-gray-100 sm:grid-cols-3 sm:gap-4">
                     <dt class="font-medium text-gray-900">Photo</dt>
                     <dd class="text-gray-700 sm:col-span-2">
                         <label for="photoInput" class="cursor-pointer inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Choose Photo</label>
@@ -53,7 +60,7 @@
                         <input type="text" id="fullname" name="fullname" class="border border-gray-300 rounded px-3 py-2 w-full" value="{{ users.fullname if users else '' }}">
                     </dd>
                 </div>
-                <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                <div class="grid grid-cols-1 gap-1 p-3 bg-gray-100 sm:grid-cols-3 sm:gap-4">
                     <dt class="font-medium text-gray-900">Email</dt>
                     <dd class="text-gray-700 sm:col-span-2">
                         <input type="email" id="email" name="email" class="border border-gray-300 rounded px-3 py-2 w-full" value="{{ users.email if users else '' }}">
@@ -65,7 +72,7 @@
                         <input type="tel" id="phone_number" name="phone_number" class="border border-gray-300 rounded px-3 py-2 w-full" value="{{ users.phone_number if users else '' }}">
                     </dd>
                 </div>
-                <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
+                <div class="grid grid-cols-1 gap-1 p-3 bg-gray-100 sm:grid-cols-3 sm:gap-4">
                     <dt class="font-medium text-gray-900">Alamat</dt>
                     <dd class="text-gray-700 sm:col-span-2">
                         <textarea id="alamat" name="alamat" class="border border-gray-300 rounded px-3 py-2 w-full">{{ users.alamat if users else '' }}</textarea>

@@ -84,8 +84,9 @@ def index():
     dataLapangan = dataLapangan_collection.find({})
     dataGaleri = dataGaleri_collection.find({})
     dataKontak = dataKontak_collection.find_one()
+    dataTentang = dataTentang_collection.find_one()
     alert_message = session.pop('alert_message', 'Selamat Datang di Gor Shinta semoga Anda senang')
-    return render_template('index.html', alert_message=alert_message, dataLapangan=dataLapangan, dataGaleri=dataGaleri, dataKontak=dataKontak)
+    return render_template('index.html', alert_message=alert_message, dataLapangan=dataLapangan, dataGaleri=dataGaleri, dataKontak=dataKontak, dataTentang=dataTentang)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -299,22 +300,25 @@ def datadiri():
             'fullname': fullname,
             'email': email,
             'phone_number': phone_number,
-            'alamat': alamat,
-            'foto': foto.filename
+            'alamat': alamat
         }
 
         if foto:
             nama_file_asli = foto.filename
             nama_file_foto = secure_filename(nama_file_asli)
-            file_path = f'./static/img/imgProfile/{nama_file_foto}'
-            foto.save(file_path)
-        else:
-            nama_file_foto = None
+            file_path = os.path.join('static/img/imgProfile', nama_file_foto)  # Updated path to be relative to static folder
+            
+            # Ensure the directory exists
+            if not os.path.exists(os.path.dirname(file_path)):
+                os.makedirs(os.path.dirname(file_path))
 
-            # Hapus foto lama jika ada
+            foto.save(file_path)
+            update_data['foto'] = file_path  # Store the relative path
+
+            # Hapus foto lama jika ada dan hanya jika berhasil menyimpan foto baru
             if old_foto_path and os.path.exists(old_foto_path):
                 os.remove(old_foto_path)
-        
+
         users_collection.update_one(
             {'_id': ObjectId(session['user_id'])},
             {'$set': update_data}
@@ -572,7 +576,18 @@ def admin_riwayat_pemesanan():
 # Rute untuk membuat laporan PDF
 @app.route('/buatLaporanPemesanan', methods=['GET'])
 def buat_laporan_pemesanan():
-    riwayat_pemesanan = list(db.riwayatPemesanan.find())
+    tanggal_str = request.args.get('tanggal')
+    if tanggal_str:
+        tanggal = datetime.strptime(tanggal_str, '%d-%m-%Y').date()
+        start_date = datetime.combine(tanggal, datetime.min.time())
+        end_date = datetime.combine(tanggal, datetime.max.time())
+        # Ambil data riwayat pemesanan berdasarkan rentang tanggal
+        riwayat_pemesanan = list(db.riwayatPemesanan.find({"selected_date": {"$gte": start_date, "$lte": end_date}}))
+    else:
+        # Ambil semua data riwayat pemesanan jika tanggal tidak diberikan
+        riwayat_pemesanan = list(db.riwayatPemesanan.find())
+    
+    # Buat laporan PDF dari data yang ditemukan
     pdf_bytes = create_pdf(riwayat_pemesanan)
     
     # Buat respons HTTP dengan laporan PDF sebagai attachment
@@ -582,13 +597,12 @@ def buat_laporan_pemesanan():
     
     return response
 
-
 @app.route('/hapusSemuaDataRiwayatPemesanan', methods=["GET", "POST"])
 def delete_all_data_pemesanan():
     db.riwayatPemesanan.delete_many({})
     return redirect(url_for('admin_riwayat_pemesanan'))
 
-@app.route('/selesaikanPemesanan/<string:_id>', methods=['POST'])
+@app.route('/selesaikan-pesanan/<string:_id>', methods=['POST'])
 def selesaikan_pemesanan(_id):
     try:
         # Cari pesanan dari database payments
