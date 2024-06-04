@@ -287,38 +287,38 @@ def payment():
 @login_required
 def datadiri():
     if request.method == 'POST':
-        fullname = request.form.get('fullname')
-        email = request.form.get('email')
-        phone_number = request.form.get('phone_number')
-        alamat = request.form.get('alamat')
-        foto = request.files.get('foto')
+        fullname = request.form['fullname']
+        email = request.form['email']
+        phone_number = request.form['phone_number']
+        alamat = request.form['alamat']
+        foto = request.files['foto']
 
-        # Temukan pengguna di database untuk mendapatkan informasi foto saat ini
         user = users_collection.find_one({'_id': ObjectId(session['user_id'])})
-        old_foto_path = user.get('foto')
-
-        update_data = {
-            'fullname': fullname,
-            'email': email,
-            'phone_number': phone_number,
-            'alamat': alamat
-        }
+        old_foto_path = f"./static/img/imgProfile/{user.get('foto')}" if user.get('foto') else None
 
         if foto:
             nama_file_asli = foto.filename
             nama_file_foto = secure_filename(nama_file_asli)
-            file_path = os.path.join('static/img/imgProfile', nama_file_foto)  # Updated path to be relative to static folder
-            
-            # Ensure the directory exists
-            if not os.path.exists(os.path.dirname(file_path)):
-                os.makedirs(os.path.dirname(file_path))
-
+            file_path = f'./static/img/imgProfile/{nama_file_foto}'
             foto.save(file_path)
-            update_data['foto'] = file_path  # Store the relative path
 
-            # Hapus foto lama jika ada dan hanya jika berhasil menyimpan foto baru
             if old_foto_path and os.path.exists(old_foto_path):
                 os.remove(old_foto_path)
+            
+            update_data = {
+                'fullname': fullname,
+                'email': email,
+                'phone_number': phone_number,
+                'alamat': alamat,
+                'foto': nama_file_foto
+            }
+        else:
+            update_data = {
+                'fullname': fullname,
+                'email': email,
+                'phone_number': phone_number,
+                'alamat': alamat
+            }
 
         users_collection.update_one(
             {'_id': ObjectId(session['user_id'])},
@@ -328,10 +328,9 @@ def datadiri():
         flash('Profil berhasil diperbarui')
         return redirect(url_for('datadiri'))
 
-    user_fullname = session.get('fullname')
-    users = users_collection.find_one({'_id': ObjectId(session['user_id'])})
+    user = users_collection.find_one({'_id': ObjectId(session['user_id'])})
+    return render_template('dataDiri.html', fullname=user.get('fullname'), users=user)
 
-    return render_template('dataDiri.html', fullname=user_fullname, users=users)
 
 
 @app.route('/adminDataLapangan', methods=['GET'])
