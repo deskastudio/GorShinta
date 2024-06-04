@@ -844,6 +844,7 @@ def admin_login():
     
 @app.route('/adminLogout')
 def admin_logout():
+    session.clear()
     logout_user()
     return redirect(url_for('index'))
 
