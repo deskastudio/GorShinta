@@ -45,7 +45,7 @@ dataPembayaran_collection = db.dataPembayaran
 dataAdmin_collection = db.dataAdmin
 
 UPLOAD_FOLDER = '/static'  # Ganti dengan path folder upload Anda
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}  # Ekstensi file yang diizinkan
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'heic'}  # Ekstensi file yang diizinkan
 
 # Inisialisasi Flask-Login
 login_manager = LoginManager()
@@ -85,8 +85,9 @@ def index():
     dataGaleri = dataGaleri_collection.find({})
     dataKontak = dataKontak_collection.find_one()
     dataTentang = dataTentang_collection.find_one()
+    dataReview = dataReview_collection.find({})
     alert_message = session.pop('alert_message', 'Selamat Datang di Gor Shinta semoga Anda senang')
-    return render_template('index.html', alert_message=alert_message, dataLapangan=dataLapangan, dataGaleri=dataGaleri, dataKontak=dataKontak, dataTentang=dataTentang)
+    return render_template('index.html', alert_message=alert_message, dataLapangan=dataLapangan, dataGaleri=dataGaleri, dataKontak=dataKontak, dataTentang=dataTentang, dataReview=dataReview)
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -689,19 +690,22 @@ def submit_review():
         email = request.form['email']
         ulasan = request.form['ulasan']
         tanggal = request.form['tanggal']
-        foto = request.files['foto']
-        
+        foto = request.files.get('foto')
+
+        # Inisialisasi nama_file_foto
+        nama_file_foto = None
+
         if foto:
             nama_file_asli = foto.filename
             nama_file_foto = secure_filename(nama_file_asli)
-            file_path = f'./static/img/{nama_file_foto}'
+            file_path = os.path.join('static', 'img', nama_file_foto)
             foto.save(file_path)
 
         # Simpan data ke dalam MongoDB
         doc = {
             'nama': nama,
             'email': email,
-            'foto': nama_file_foto,
+            'foto': nama_file_foto,  # Tetap gunakan nama_file_foto di sini
             'ulasan': ulasan,
             'tanggal': tanggal
         }

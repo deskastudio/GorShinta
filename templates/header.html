@@ -4,30 +4,81 @@
       <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
       </div>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 w-52 border rounded-lg bg-gray-200">
-        <li><a href="#">Beranda</a></li>
-        <li><a href="/login">Pesan</a></li>
-        <li><a href="#fasilitas">Fasilitas</a></li>
-        <li><a href="#kategori">Kategori</a></li>
-        <li><a href="#tentang">Tentang Kami</a></li>
-        <li><a href="#kontak">Kontak</a></li>
-        <li><a href="#testimoni">Testimoni</a></li>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 w-52 border rounded-lg bg-gray-800 text-white">
+        <li><a href="#" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Beranda</a></li>
+      <li><a href="/login" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-blue-600">Pesan</a></li>
+      <li><a href="#fasilitas" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Fasilitas</a></li>
+      <li><a href="#kategori" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Kategori</a></li>
+      <li><a href="#tentang" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Tentang Kami</a></li>
+      <li><a href="#kontak" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Kontak</a></li>
+      <li><a href="#testimoni" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Testimoni</a></li>
       </ul>
     </div>
-    <a class="btn btn-ghost text-2xl font-bold">Gor <span class="text-teal-600">Shinta</span></a>
+    <a onclick="smoothScroll('#')" class="btn btn-ghost text-2xl font-bold">Gor <span class="text-teal-600">Shinta</span></a>
   </div>
   <div class="navbar-center hidden lg:flex">
-    <ul class="menu menu-horizontal px-1 font-semibold text-lg">
-      <li><a href="#">Beranda</a></li>
-        <li><a href="/login">Pesan</a></li>
-        <li><a href="#fasilitas">Fasilitas</a></li>
-        <li><a href="#kategori">Kategori</a></li>
-        <li><a href="#tentang">Tentang Kami</a></li>
-        <li><a href="#kontak">Kontak</a></li>
-        <li><a href="#testimoni">Testimoni</a></li>
+    <ul class="menu menu-horizontal px-1 font-semibold text-lg space-x-4 text-gray-900">
+      <li><a onclick="smoothScroll('#')" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Beranda</a></li>
+      <li><a href="/login" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-blue-600">Pesan</a></li>
+      <li><a onclick="smoothScroll('#fasilitas')" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600 p-2 rounded-lg">Fasilitas</a></li>
+      <li><a onclick="smoothScroll('#kategori')" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Kategori</a></li>
+      <li><a onclick="smoothScroll('#tentang')" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Tentang Kami</a></li>
+      <li><a onclick="smoothScroll('#kontak')" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Kontak</a></li>
+      <li><a onclick="smoothScroll('#testimoni')" class="hover:text-gray-100 border-b-2 border-transparent hover:border-yellow-500 transition-all duration-300 hover:bg-teal-600">Testimoni</a></li>
     </ul>
   </div>
   <div class="navbar-end gap-4">
-    <a class="text-white font-bold py-2 px-4 rounded transition-transform transform duration-300 bg-gradient-to-r from-teal-400 to-gray-500 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2" href="/register">Daftar</a>
+    <a class="relative inline-block text-lg group" href="/register">
+        <span class="relative z-10 block px-5 py-3 overflow-hidden font-bold leading-tight text-white transition-colors duration-300 ease-out bg-gray-900 rounded-lg group-hover:text-white">
+            <span class="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-teal-600 group-hover:bg-gray-800"></span>
+            <span class="absolute left-0 w-full h-48 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-red-500 group-hover:-rotate-180 ease"></span>
+            <span class="relative">Daftar</span>
+        </span>
+        <span class="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-yellow-500 rounded-lg group-hover:mb-0 group-hover:mr-0" data-rounded="rounded-lg"></span>
+    </a>
 </div>
 </div>
+<script>
+  // Menambahkan event listener untuk mengaktifkan efek background navbar saat scrolling
+  window.addEventListener('scroll', function() {
+    var navbar = document.querySelector('.navbar');
+    if (window.scrollY > 0) {
+      navbar.classList.add('bg-gray-300', 'shadow-lg', 'rounded-lg');
+    } else {
+      navbar.classList.remove('bg-gray-300', 'shadow-lg', 'rounded-lg');
+    }
+    // Tambahkan efek transisi ke navbar
+    navbar.style.transition = 'background-color 0.5s ease, box-shadow 0.5s ease, border-radius 0.5s ease';
+  });
+
+  // Fungsi untuk menangani klik pada tautan navbar dengan smooth scroll
+  function smoothScroll(target) {
+    var element;
+    if (target === '#') {
+      element = document.documentElement; // Beranda, arahkan ke halaman utama
+    } else if (target === '/login') {
+      window.location.href = '/login'; // Redirect langsung ke halaman login
+      return;
+    } else {
+      element = document.querySelector(target);
+    }
+    if (element) {
+      var offset = element.offsetTop;
+      var navbarHeight = document.querySelector('.navbar').offsetHeight;
+      var scrollPosition = window.scrollY;
+      var distance = Math.abs(offset - scrollPosition);
+      var duration = distance / 3; // Adjust scroll speed according to distance
+
+      window.scrollTo({
+        top: offset - navbarHeight,
+        behavior: 'smooth',
+        duration: duration // Adding custom duration for smooth scrolling
+      });
+    }
+  }
+</script>
+
+
+
+
+
