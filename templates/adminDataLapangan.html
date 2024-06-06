@@ -144,7 +144,7 @@
                                     </td>
                                     <td class="px-12 py-4 text-sm font-medium whitespace-nowrap">
                                         <div>
-                                            <img src="../static/img/{{data.foto}}" alt="" width="70px">
+                                            <img src="../static/img/{{data.foto}}" alt="" width="70px" class="cursor-pointer" onclick="showModal('../static/img/{{data.foto}}')">
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 text-sm whitespace-nowrap">
@@ -176,6 +176,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+            <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden">
+                <div class="bg-white p-4 rounded shadow-lg">
+                    <span class="close cursor-pointer absolute top-0 right-0 mt-2 mr-2 text-black text-xl">&times;</span>
+                    <img id="modalImage" src="" alt="" class="w-full h-full object-contain">
+                </div>
+            </div>
 
         <!-- <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
             <div class="text-sm text-gray-500 dark:text-gray-400">
@@ -214,10 +222,26 @@
 </aside>
 <!-- sidebar end  -->
 
-<!-- hero section start -->
+<script>
+    // JavaScript for handling the modal
+    function showModal(imageSrc) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = imageSrc;
+        modal.classList.remove('hidden');
+    }
 
+    document.querySelector('.close').onclick = function() {
+        document.getElementById('imageModal').classList.add('hidden');
+    };
 
-<!-- hero section end -->
+    window.onclick = function(event) {
+        const modal = document.getElementById('imageModal');
+        if (event.target == modal) {
+            modal.classList.add('hidden');
+        }
+    };
+</script>
 
 </body>
 

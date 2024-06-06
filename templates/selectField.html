@@ -51,18 +51,20 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for data in dataLapangan %}
-            <div class="lapangan-card" data-jenis="{{ data.jenis }}">
-                <div class="card w-96 glass">
-                    <figure><img src="../static/img/{{data.foto}}" alt="{{ data.nama }}" /></figure>
-                    <div class="card-body">
-                      <h2 class="card-title">{{ data.jenis }}</h2>
-                      <h3>{{ data.nama }}</h3>
-                      <p>{{ data.deskripsi }}</p>
-                      <div class="card-actions justify-end">
-                        <button class="btn btn-primary" type="button" onclick="window.location.href='/selectTime/{{data._id}}'">Pesan Sekarang</button>
-                      </div>
-                    </div>
-                  </div>
+            <div class="card w-96 bg-base-100 shadow-xl">
+                <figure class="px-10 pt-10">
+                    <img src="../static/img/{{data.foto}}" alt="{{ data.nama }}" class="rounded-xl" />
+                </figure>
+                <div class="card-body items-center text-center">
+                <h2 class="card-title">{{ data.jenis }}</h2>
+                <h3>{{data.nama}}</h3>
+                <h4>{{data.harga}}</h4>
+                <p>{{ data.deskripsi }}</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" type="button" onclick="window.location.href='/selectTime/{{data._id}}'">Pesan Sekarang</button>
+
+                </div>
+                </div>
             </div>
         {% endfor %}
     </div>
