@@ -24,46 +24,47 @@
         });
     </script>
 </head>
-<body style="background-image: url('./static/img/booking.png')" class="bg-cover bg-center min-h-screen">
+<body style="background-image: url('../static/img/booking.png');" class="bg-cover bg-center min-h-screen">
 
 <!-- navbar start -->
 {% include "headerBooking.html" %}
 <!-- navbar end  -->
 
 <!-- hero section start -->
-<section class="bg-transparent mb-20 mx-24">
-    <div class="container mx-auto lg:px-24">
-        <a class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
+<section class="bg-transparent lg:mx-24">
+    <div class="container mx-auto lg:px-24 text-start">
+        <a class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75 mb-10"
         href="/login">
-        <span class="block rounded-full bg-white px-8 py-3 text-sm font-medium group-hover:bg-transparent">
+        <span class="block rounded-full bg-white px-8 py-3 text-sm font-medium group-hover:bg-transparent group-hover:text-white transition duration-300 ease-in-out">
             Kembali
         </span>
-    </a>
+        </a>
     </div>
     <h1 class="text-5xl font-extrabold text-center mb-2 text-gray-900">Kategori</h1>
-    <h1 class="text-xl font-extrabold text-center mb-10 text-gray-500 underline">Olahraga apa yang kamu sukai?</h1>
+    <h2 class="text-xl font-bold text-center mb-10 text-gray-500 underline">Olahraga apa yang kamu sukai?</h2>
     
-    <div class="text-center mb-10">
-        <button class="filter-button px-4 py-2 bg-blue-500 text-white rounded" data-filter="all">Semua</button>
-        <button class="filter-button px-4 py-2 bg-green-500 text-white rounded" data-filter="Futsal">Futsal</button>
-        <button class="filter-button px-4 py-2 bg-red-500 text-white rounded" data-filter="Badminton">Badminton</button>
+    <div class="text-center">
+        <button class="filter-button px-6 py-2 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-full shadow-lg hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-400 transition duration-300 ease-in-out" data-filter="all">Semua</button>
+        <button class="filter-button px-6 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-full shadow-lg hover:bg-gradient-to-r hover:from-green-600 hover:to-green-400 transition duration-300 ease-in-out" data-filter="Futsal">Futsal</button>
+        <button class="filter-button px-6 py-2 bg-gradient-to-r from-red-400 to-red-600 text-white rounded-full shadow-lg hover:bg-gradient-to-r hover:from-red-600 hover:to-red-400 transition duration-300 ease-in-out" data-filter="Badminton">Badminton</button>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="flex justify-center gap-6 flex-wrap py-10">
         {% for data in dataLapangan %}
-            <div class="card w-96 bg-base-100 shadow-xl">
+            <div class="card lapangan-card w-96 bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300" data-jenis="{{ data.jenis }}">
                 <figure class="px-10 pt-10">
-                    <img src="../static/img/{{data.foto}}" alt="{{ data.nama }}" class="rounded-xl" />
+                    <img src="../static/img/{{data.foto}}" alt="{{ data.nama }}" class="rounded-xl shadow-md" />
                 </figure>
-                <div class="card-body items-center text-center">
-                <h2 class="card-title">{{ data.jenis }}</h2>
-                <h3>{{data.nama}}</h3>
-                <h4>{{data.harga}}</h4>
-                <p>{{ data.deskripsi }}</p>
-                <div class="card-actions">
-                    <button class="btn btn-primary" type="button" onclick="window.location.href='/selectTime/{{data._id}}'">Pesan Sekarang</button>
-
-                </div>
+                <div class="card-body items-center text-center p-6">
+                    <h2 class="card-title bg-gray-900 text-gray-100 py-2 px-6 rounded-md">{{ data.jenis }}</h2>
+                    <div class="flex justify-between items-center w-full px-6">
+                        <h3 class="text-xl font-semibold text-gray-800">{{data.nama}}</h3>
+                        <h4 class="text-lg text-green-500">Rp. {{data.harga}}</h4>
+                    </div>
+                    <p class="text-gray-700">{{ data.deskripsi }}</p>
+                    <div class="card-actions">
+                        <button class="btn btn-primary bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition" type="button" onclick="window.location.href='/selectTime/{{data._id}}'">Pesan Sekarang</button>
+                    </div>
                 </div>
             </div>
         {% endfor %}

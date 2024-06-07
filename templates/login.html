@@ -72,12 +72,13 @@
           type="password"
             class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm focus:outline-none focus:ring focus:border-blue-500"
             placeholder="Enter password"
+            id="passwordInput"
           />
 
-          <span class="absolute inset-y-0 end-0 grid place-content-center px-4">
+          <span class="absolute inset-y-0 end-0 grid place-content-center px-4" id="togglePassword">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="size-4 text-gray-400"
+              class="size-4 text-gray-400 cursor-pointer"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -115,7 +116,7 @@
     </form>
   </div>
 
-  <div class="relative h-64 w-full sm:h-96 lg:h-full lg:w-1/2">
+  <div class="relative h-96 w-full lg:h-full lg:w-1/2">
     <img
       alt=""
       src="./static/img/login.png"
@@ -123,6 +124,16 @@
     />
   </div>
 </section>
+
+<script>
+  const togglePassword = document.getElementById('togglePassword');
+  const passwordInput = document.getElementById('passwordInput');
+
+  togglePassword.addEventListener('click', function() {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+  });
+</script>
     
     <!-- login section end -->
   </body>

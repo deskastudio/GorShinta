@@ -13,24 +13,22 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <style>
+      /* CSS tambahan */
+      @media (max-width: 640px) {
+        .form-container {
+          flex-direction: column;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- hero section start -->
     {% block content %}
     <section class="bg-gray-200">
       <div class="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <aside
-          class="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6"
-        >
-          <img
-            alt=""
-            src="./static/img/register.png"
-            class="absolute inset-0 h-full w-full object-cover"
-          />
-        </aside>
-
         <main
-          class="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
+          class="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 form-container"
         >
           <div class="max-w-xl lg:max-w-3xl">
             <a class="block text-blue-600" href="#">
@@ -49,16 +47,24 @@
             </p>
 
             <form method="POST" action="{{ url_for('register') }}" id="register-form" class="mt-8 grid grid-cols-6 gap-6">
+              
               <div class="col-span-6 sm:col-span-3">
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                    <ul>
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
+                <div class="mt-6">
+                  <ul class="divide-y divide-gray-200 rounded-md bg-blue-100 p-4">
+                    {% for message in messages %}
+                    <li class="flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 0a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-.84-6.22a1.5 1.5 0 0 1 2.12 0l3.06 3.06a1.5 1.5 0 0 1-2.12 2.12l-2.36-2.36-.6.6a1.5 1.5 0 0 1-2.12-2.12l1.41-1.41z" clip-rule="evenodd" />
+                      </svg>
+                      <span class="text-sm text-blue-800">{{ message }}</span>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
                 {% endif %}
-            {% endwith %}
+                {% endwith %}
                 <label
                   class="block text-sm font-medium text-gray-700"
                 >
@@ -136,11 +142,21 @@
                 <p class="mt-4 text-sm text-gray-500 sm:mt-0">
                   Sudah punya Akun?
                   <a href="/login" class="text-gray-700 underline">Masuk</a>.
-                </p>
+                </
               </div>
             </form>
           </div>
         </main>
+        <!-- Memindahkan gambar register ke bawah form pada tampilan mobile -->
+        <aside
+          class="relative block h-96 lg:col-span-5 lg:order-last lg:h-full xl:col-span-6"
+        >
+          <img
+            alt=""
+            src="./static/img/register.png"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+        </aside>
       </div>
     </section>
     {% endblock %}
