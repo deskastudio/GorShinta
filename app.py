@@ -79,6 +79,9 @@ def check_login_time():# Periksa apakah waktu login sudah ditetapkan
 
 LOGOUT_TIME_SECONDS = 1800  # Contoh: logout otomatis setelah 30 menit tidak aktif
 
+def is_valid_admin():
+    return 'admin_id' in session
+
 @app.route('/')
 def index():
     dataLapangan = dataLapangan_collection.find({})
@@ -244,7 +247,7 @@ def payment():
     
     if not booking_data:
         alert_message = 'Tidak ada data pemesanan yang ditemukan. Silakan lakukan pemesanan terlebih dahulu.'
-        return redirect(url_for('selectTime', _id=booking_data['_id'])) 
+        return redirect(url_for('selectTime'))
     
     if request.method == 'POST':
         payment_type = request.form.get('payment_type')
@@ -264,7 +267,7 @@ def payment():
             nama_file_foto = None
 
         # Simpan data pembayaran dan pemesanan ke MongoDB
-        db.payments.insert_one({
+        payment_data = {
             'fullname': booking_data['fullname'],
             'phone_number': booking_data['phone_number'],
             'email': booking_data['email'],
@@ -276,12 +279,32 @@ def payment():
             'payment_type': payment_type,
             'payment_method': payment_method,
             'payment_proof': nama_file_foto
-        })
+        }
+        
+        result = db.payments.insert_one(payment_data)
+        payment_id = result.inserted_id
         
         session['alert_message'] = 'Pembayaran Berhasil! Terimakasih sudah ingin bermain di Gor Sinta.'
-        return redirect(url_for('index'))
+        return redirect(url_for('invoice', payment_id=str(payment_id)))
     
     return render_template('payment.html', fullname=fullname, booking_data=booking_data, alert_message=alert_message, dataPembayaran=dataPembayaran)
+
+@app.route('/invoice/<payment_id>', methods=['GET'])
+@login_required
+def invoice(payment_id):
+    fullname = session.get('fullname')
+    try:
+        payment = db.payments.find_one({'_id': ObjectId(payment_id)})
+    except:
+        flash('Pembayaran tidak ditemukan.')
+        return redirect(url_for('index'))
+    
+    if not payment:
+        flash('Pembayaran tidak ditemukan.')
+        return redirect(url_for('index'))
+    
+    return render_template('invoice.html', payment=payment, fullname=fullname)
+
 
 @app.route('/datadiri', methods=['GET', 'POST'])
 @login_required
@@ -332,14 +355,20 @@ def datadiri():
     return render_template('dataDiri.html', fullname=user.get('fullname'), users=user)
 
 
-
 @app.route('/adminDataLapangan', methods=['GET'])
 def admin_data_lapangan():
-    dataLapangan = list(db.dataLapangan.find({}))
-    return render_template('adminDataLapangan.html', dataLapangan=dataLapangan)
+    if is_valid_admin():
+        dataLapangan = list(db.dataLapangan.find({}))
+        return render_template('adminDataLapangan.html', dataLapangan=dataLapangan)
+    else:
+        return redirect(url_for('admin_login'))
 
 @app.route('/tambahDataLapangan', methods=['GET', 'POST'])
 def tambah_data_lapangan():
+    if not is_valid_admin():
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
+    
     if request.method == 'POST':
         jenis_lapangan = request.form['jenis_lapangan']
         harga_lapangan = request.form['harga_lapangan']
@@ -406,42 +435,52 @@ def delete_data_lapangan(_id):
 
 @app.route('/kontak', methods=['GET', 'POST'])
 def kontak():
-    data_kontak = dataKontak_collection.find_one()  # Mengambil satu data saja, karena asumsi hanya ada satu entri untuk kontak
-    if request.method == 'POST':
-        email_admin = request.form['email_admin']
-        noTelepon_admin = request.form['noTelepon_admin']
-        alamat_admin = request.form['alamat_admin']
-        maps_admin = request.form['maps_admin']
-        
-        # Memasukkan atau mengupdate data kontak ke dalam database
-        dataKontak_collection.update_one({}, {'$set': {
-            'email_admin': email_admin,
-            'noTelepon_admin': noTelepon_admin,
-            'alamat_admin': alamat_admin,
-            'maps_admin': maps_admin
-        }}, upsert=True)
-        
-    return render_template('adminKontak.html', data_kontak=data_kontak)
+    if is_valid_admin():
+        data_kontak = dataKontak_collection.find_one()  # Mengambil satu data saja, karena asumsi hanya ada satu entri untuk kontak
+        if request.method == 'POST':
+            email_admin = request.form['email_admin']
+            noTelepon_admin = request.form['noTelepon_admin']
+            alamat_admin = request.form['alamat_admin']
+            maps_admin = request.form['maps_admin']
+            
+            # Memasukkan atau mengupdate data kontak ke dalam database
+            dataKontak_collection.update_one({}, {'$set': {
+                'email_admin': email_admin,
+                'noTelepon_admin': noTelepon_admin,
+                'alamat_admin': alamat_admin,
+                'maps_admin': maps_admin
+            }}, upsert=True)
+            
+        return render_template('adminKontak.html', data_kontak=data_kontak)
+    else:
+        return redirect(url_for('admin_login'))
 
 @app.route('/tentang', methods=['GET', 'POST'])
 def tentang():
-    data_tentang = dataTentang_collection.find_one()  
-    
-    if request.method == 'POST':
-        judul_admin = request.form['judul_admin']
-        deskripsi_admin = request.form['deskripsi_admin']
+    if is_valid_admin():
+        data_tentang = dataTentang_collection.find_one()  
         
-        # Memasukkan atau mengupdate data kontak ke dalam database
-        dataTentang_collection.update_one({}, {'$set': {
-            'judul_admin': judul_admin,
-            'deskripsi_admin': deskripsi_admin
-        }}, upsert=True)  # upsert=True memastikan data akan diupdate jika sudah ada, atau dimasukkan jika belum ada
-    return render_template('adminTentang.html', data_tentang=data_tentang)
+        if request.method == 'POST':
+            judul_admin = request.form['judul_admin']
+            deskripsi_admin = request.form['deskripsi_admin']
+            
+            # Memasukkan atau mengupdate data kontak ke dalam database
+            dataTentang_collection.update_one({}, {'$set': {
+                'judul_admin': judul_admin,
+                'deskripsi_admin': deskripsi_admin
+            }}, upsert=True)  # upsert=True memastikan data akan diupdate jika sudah ada, atau dimasukkan jika belum ada
+        return render_template('adminTentang.html', data_tentang=data_tentang)
+    else:
+        return redirect(url_for('admin_login'))
 
 @app.route('/review', methods=['GET'])
 def review():
-    dataReview = list(db.dataReview.find({}))
-    return render_template('adminReview.html', dataReview=dataReview)
+    if is_valid_admin():
+        dataReview = list(db.dataReview.find({}))
+        return render_template('adminReview.html', dataReview=dataReview)
+    else:
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
 
 @app.route('/hapusReview/<string:_id>', methods=["GET", "POST"])
 def delete_data_review(_id):
@@ -450,55 +489,48 @@ def delete_data_review(_id):
 
 @app.route('/adminDataAkun', methods=['GET'])
 def admin_data_akun():
-    admin = list(db.dataAdmin.find({}))
-    return render_template('adminDataAkun.html', admin=admin)
+    if is_valid_admin():
+        admin = list(dataAdmin_collection.find({}))
+        return render_template('adminDataAkun.html', admin=admin)
+    else:
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
 
 @app.route('/tambahDataAdmin', methods=['GET', 'POST'])
 def tambah_data_admin():
-    if request.method == 'GET':
-        return render_template('tambahDataAdmin.html')
-    else:
+    if not is_valid_admin():
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
+
+    if request.method == 'POST':
         username = request.form['username']
-        password1 = request.form['password1'].encode('utf-8')
-        password2 = request.form['password2'].encode('utf-8')
-        hash_password = bcrypt.hashpw(password1, bcrypt.gensalt())
-        
-        if not username or not password1 or not password2:
-            flash('Please fill in all fields')
-            return redirect(url_for('tambah_data_admin'))
-        
-        if len(password1) < 8:
-            flash('Password must be at least 8 characters long')
-            return redirect(url_for('tambah_data_admin'))
+        password = request.form['password']
+        hash_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')  # Konversi ke string
 
-        if password1 != password2:
-            flash('Passwords do not match')
-            return redirect(url_for('tambah_data_admin'))
-
-        if users_collection.find_one({'username': username}): 
-            flash('Email already exists')
-            return redirect(url_for('tambah_data_admin'))
-        
-        new_user = {
+        doc = {
             'username': username,
             'password': hash_password
         }
+        
+        dataAdmin_collection.insert_one(doc)
+        return redirect(url_for("admin_data_akun"))
+        
+    return render_template('tambahDataAdmin.html')
 
-        user_id = dataAdmin_collection.insert_one(new_user).inserted_id
-        set_login_time()
-        session['user_id'] = str(user_id)
-        session['fullname'] = username
-        return redirect(url_for('admin_data_akun'))
     
 @app.route('/hapusDataAdmin/<string:_id>', methods=["GET", "POST"])
-def delete_data_admin(_id):
+def hapus_data_admin(_id):
     db.dataAdmin.delete_one({'_id': ObjectId(_id)})
     return redirect(url_for('admin_data_akun'))
 
 @app.route('/adminDataPemesanan')
 def admin_data_pemesanan():
-    dataPemesanan = list(db.payments.find({}))
-    return render_template('adminDataPemesanan.html', dataPemesanan=dataPemesanan)
+    if is_valid_admin():
+        dataPemesanan = list(db.payments.find({}))
+        return render_template('adminDataPemesanan.html', dataPemesanan=dataPemesanan)
+    else:
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
 
 # Fungsi untuk membuat laporan PDF
 def create_pdf(riwayat_pemesanan):
@@ -570,8 +602,11 @@ def create_pdf(riwayat_pemesanan):
 
 @app.route('/adminRiwayatPemesanan', methods=['GET'])
 def admin_riwayat_pemesanan():
-    riwayat_pemesanan = list(db.riwayatPemesanan.find())
-    return render_template('adminRiwayatPemesanan.html', riwayatPemesanan=riwayat_pemesanan)
+    if is_valid_admin():
+        riwayat_pemesanan = list(db.riwayatPemesanan.find())
+        return render_template('adminRiwayatPemesanan.html', riwayatPemesanan=riwayat_pemesanan)
+    else:
+        return redirect(url_for('admin_login'))
 
 # Rute untuk membuat laporan PDF
 @app.route('/buatLaporanPemesanan', methods=['GET'])
@@ -618,11 +653,18 @@ def selesaikan_pemesanan(_id):
 
 @app.route('/galeri', methods=['GET', 'POST'])
 def galeri():
-    dataGaleri = list(db.dataGaleri.find({}))
-    return render_template('adminGaleri.html', dataGaleri=dataGaleri)
+    if is_valid_admin():
+        dataGaleri = list(db.dataGaleri.find({}))
+        return render_template('adminGaleri.html', dataGaleri=dataGaleri)
+    else:
+        return redirect(url_for('admin_login'))
 
 @app.route('/tambahDataGaleri', methods=['GET', 'POST'])
 def tambah_data_galeri():
+    if not is_valid_admin():
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
+    
     if request.method == 'POST':
         judul_foto = request.form['judul_foto']
         foto_lapangan = request.files['foto_lapangan']
@@ -715,11 +757,19 @@ def submit_review():
 
 @app.route('/adminDataUser', methods=['GET'])
 def admin_data_user():
-    users = list(users_collection.find({}))
-    return render_template('adminDataUser.html', users=users)
+    if is_valid_admin():
+        users = list(users_collection.find({}))
+        return render_template('adminDataUser.html', users=users)
+    else:
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
 
 @app.route('/tambahDataPelanggan', methods=['GET', 'POST'])
 def tambah_data_pelanggan():
+    if not is_valid_admin():
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
+    
     if request.method == 'GET':
         return render_template('tambahDataPelanggan.html')
     else:
@@ -776,11 +826,19 @@ def delete_data_pelanggan(_id):
 
 @app.route('/adminPembayaran', methods=['GET'])
 def admin_pembayaran():
-    pembayaran = list(dataPembayaran_collection.find({}))
-    return render_template('adminPembayaran.html', pembayaran=pembayaran)
+    if is_valid_admin():
+        pembayaran = list(dataPembayaran_collection.find({}))
+        return render_template('adminPembayaran.html', pembayaran=pembayaran)
+    else:
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
 
 @app.route('/tambahDataPembayaran', methods=['GET', 'POST'])
 def tambah_data_pembayaran():
+    if not is_valid_admin():
+        flash('Please log in as an admin to access this page.')
+        return redirect(url_for('admin_login'))
+    
     if request.method == 'POST':
         jenis_pembayaran = request.form['jenis_pembayaran']
         nomor_pembayaran = request.form['nomor_pembayaran']
@@ -819,28 +877,20 @@ def edit_data_pembayaran(_id):
 def admin_login():
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
-
-        user = dataAdmin_collection.find_one({'username': username})
-
-        if user is not None and len(user) > 0:
-            if bcrypt.checkpw(password.encode('utf-8'), user['password']):
-                user_obj = User()
-                user_obj.id = str(user['_id'])
-                login_user(user_obj)
-                
-                return redirect(url_for('admin_data_lapangan'))
-            
-            else:
-                flash("Invalid email or password")
-                return redirect(url_for('admin_login'))
-            
-        else:
-            flash("Invalid email or password")
-            return redirect(url_for('admin_login'))
+        password = request.form['password'].encode('utf-8')
         
-    else:
-        return render_template('adminLogin.html')
+        user = dataAdmin_collection.find_one({'username': username})
+        
+        if user and bcrypt.checkpw(password, user['password'].encode('utf-8')):
+            session['user_id'] = str(user['_id'])
+            session['fullname'] = user['username']
+            session['admin_id'] = str(user['_id'])
+            return redirect(url_for('admin_data_akun'))
+        else:
+            flash('Invalid username or password')
+            return redirect(url_for('admin_login'))
+    
+    return render_template('adminLogin.html')
     
 @app.route('/adminLogout')
 def admin_logout():
