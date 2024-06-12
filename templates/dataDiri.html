@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="../static/img/sinta.png" rel="icon" type="image/x-icon" />
+    <link href="{{ url_for('static', filename='img/sinta.png') }}" rel="icon" type="image/x-icon" />
 
     <title>Booking Page | Gor Sinta</title>
-    <link href="../static/src/output.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='src/output.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function previewPhoto(input) {
@@ -30,7 +30,7 @@
         $(document).ready(function() {
             var currentPhoto = "{{ users.foto if users else '' }}";
             if (currentPhoto) {
-                $('#photoPreview').attr('src', '/' + currentPhoto).show();
+                $('#photoPreview').attr('src', "{{ url_for('static', filename='img/imgProfile/' + currentPhoto) }}").show();
             }
         });
     </script>
@@ -51,7 +51,7 @@
                     <dd class="text-gray-700 sm:col-span-2">
                         <label for="photoInput" class="cursor-pointer inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Choose Photo</label>
                         <input name="foto" type="file" id="photoInput" class="hidden" onchange="previewPhoto(this)">
-                        <img id="photoPreview" src="../static/img/imgProfile/{{ users.foto }}" alt="Preview" style="display: none; max-width: 100%; height: auto;" width="200px" class="py-4">
+                        <img id="photoPreview" src="{{ url_for('static', filename='img/imgProfile/' + (users.foto if users else '')) }}" alt="Preview" style="display: none; max-width: 100%; height: auto;" width="200px" class="py-4">
                     </dd>
                 </div>
                 <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">

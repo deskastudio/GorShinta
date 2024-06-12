@@ -44,30 +44,58 @@
 <section class="printableArea">
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold mb-6 text-center">Invoice Pembayaran</h2>
-            <div class="mb-4">
-                <p><strong>Nama:</strong> {{ payment.fullname }}</p>
-                <p><strong>No. Telepon:</strong> {{ payment.phone_number }}</p>
-                <p><strong>Email:</strong> {{ payment.email }}</p>
-                <p><strong>Tanggal Pemesanan:</strong> {{ payment.selected_date }}</p>
-                <p><strong>Waktu Pemesanan:</strong> {{ payment.selected_time }}</p>
-                <p><strong>Olahraga:</strong> {{ payment.selected_sport }}</p>
-                <p><strong>Lapangan:</strong> {{ payment.selected_court }}</p>
-                <p><strong>Harga:</strong> {{ payment.selected_price }}</p>
-                <p><strong>Jenis Pembayaran:</strong> {{ payment.payment_type }}</p>
-                <p><strong>Metode Pembayaran:</strong> {{ payment.payment_method }}</p>
+            <h2 class="text-2xl font-semibold mb-6 text-center">Bukti Pemesanan</h2>
+            <div class="mb-4 border-b-2 pb-4">
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Nama:</span>
+                    <span>{{ payment.fullname }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">No. Telepon:</span>
+                    <span>{{ payment.phone_number }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Email:</span>
+                    <span>{{ payment.email }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Tanggal Pemesanan:</span>
+                    <span>{{ payment.selected_date }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Waktu Pemesanan:</span>
+                    <span>{{ payment.selected_time }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Olahraga:</span>
+                    <span>{{ payment.selected_sport }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Lapangan:</span>
+                    <span>{{ payment.selected_court }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Harga:</span>
+                    <span>{{ payment.selected_price }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Jenis Pembayaran:</span>
+                    <span>{{ payment.payment_type }}</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Metode Pembayaran:</span>
+                    <span>{{ payment.payment_method }}</span>
+                </div>
             </div>
             {% if payment.payment_proof %}
-            <div class="mb-4">
-                <p><strong>Bukti Pembayaran:</strong></p>
-                <img src="{{ url_for('static', filename='img/' + payment.payment_proof) }}" alt="Bukti Pembayaran" class="w-full h-auto">
+            <div class="mb-4 border-t-2 pt-4">
+                <p class="font-medium mb-2">Bukti Pembayaran:</p>
+                <img src="{{ url_for('static', filename='img/' + payment.payment_proof) }}" alt="Bukti Pembayaran" class="w-full h-auto rounded-lg shadow">
             </div>
             {% endif %}
-            <div class="text-center mt-6">
-                <div class="text-center mt-6 no-print">
-                    <a href="/" class="print-button bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Kembali</a>
-                    <button onclick="window.print()" class="print-button bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Print</button>
-                </div>
+            <div class="text-center mt-6 no-print">
+                <a href="/" class="print-button bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Selesai</a>
+                <button onclick="window.print()" class="print-button bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Print</button>
             </div>
         </div>
     </div>

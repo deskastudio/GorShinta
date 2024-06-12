@@ -352,7 +352,8 @@ def datadiri():
         return redirect(url_for('datadiri'))
 
     user = users_collection.find_one({'_id': ObjectId(session['user_id'])})
-    return render_template('dataDiri.html', fullname=user.get('fullname'), users=user)
+    currentPhoto = user.get('foto') if user else ''  # Definisikan variabel currentPhoto
+    return render_template('dataDiri.html', fullname=user.get('fullname'), users=user, currentPhoto=currentPhoto)
 
 
 @app.route('/adminDataLapangan', methods=['GET'])
@@ -477,7 +478,16 @@ def tentang():
 def review():
     if is_valid_admin():
         dataReview = list(db.dataReview.find({}))
-        return render_template('adminReview.html', dataReview=dataReview)
+        page = request.args.get('page', 1, type=int)  
+        per_page = 2
+        offset = (page - 1) * per_page
+
+        dataReview = list(db.dataReview.find({}).skip(offset).limit(per_page))
+        
+        total_reviews = db.dataReview.count_documents({}) 
+        total_pages = total_reviews // per_page + (total_reviews % per_page > 0)
+
+        return render_template('adminReview.html', dataReview=dataReview, total_pages=total_pages, page=page)
     else:
         flash('Please log in as an admin to access this page.')
         return redirect(url_for('admin_login'))
@@ -523,14 +533,22 @@ def hapus_data_admin(_id):
     db.dataAdmin.delete_one({'_id': ObjectId(_id)})
     return redirect(url_for('admin_data_akun'))
 
-@app.route('/adminDataPemesanan')
+@app.route('/adminDataPemesanan', methods=['GET'])
 def admin_data_pemesanan():
     if is_valid_admin():
         dataPemesanan = list(db.payments.find({}))
-        return render_template('adminDataPemesanan.html', dataPemesanan=dataPemesanan)
+        page = request.args.get('page', 1, type=int)  
+        per_page = 5 
+        total_pages = len(dataPemesanan) // per_page + (len(dataPemesanan) % per_page > 0)  
+        offset = (page - 1) * per_page
+
+        dataPerPage = dataPemesanan[offset:offset + per_page]
+        return render_template('adminDataPemesanan.html', dataPemesanan=dataPerPage,  dataPerPage=dataPerPage, total_pages=total_pages, page=page)
     else:
         flash('Please log in as an admin to access this page.')
         return redirect(url_for('admin_login'))
+
+
 
 # Fungsi untuk membuat laporan PDF
 def create_pdf(riwayat_pemesanan):
@@ -604,9 +622,16 @@ def create_pdf(riwayat_pemesanan):
 def admin_riwayat_pemesanan():
     if is_valid_admin():
         riwayat_pemesanan = list(db.riwayatPemesanan.find())
-        return render_template('adminRiwayatPemesanan.html', riwayatPemesanan=riwayat_pemesanan)
+        page = request.args.get('page', 1, type=int)  
+        per_page = 5
+        total_pages = len(riwayat_pemesanan) // per_page + (len(riwayat_pemesanan) % per_page > 0)  
+        offset = (page - 1) * per_page
+
+        dataPerPage = riwayat_pemesanan[offset:offset + per_page]
+        return render_template('adminRiwayatPemesanan.html', riwayatPemesanan=dataPerPage,  dataPerPage=dataPerPage, total_pages=total_pages, page=page)
     else:
         return redirect(url_for('admin_login'))
+
 
 # Rute untuk membuat laporan PDF
 @app.route('/buatLaporanPemesanan', methods=['GET'])
@@ -758,11 +783,26 @@ def submit_review():
 @app.route('/adminDataUser', methods=['GET'])
 def admin_data_user():
     if is_valid_admin():
-        users = list(users_collection.find({}))
-        return render_template('adminDataUser.html', users=users)
+        page = request.args.get('page', 1, type=int)  
+        per_page = 5
+        offset = (page - 1) * per_page
+        users = list(users_collection.find({}).skip(offset).limit(per_page))
+        
+        total_users = users_collection.count_documents({})
+        total_pages = total_users // per_page
+        if total_users % per_page > 0:
+            total_pages += 1
+
+        return render_template('adminDataUser.html', users=users,  total_pages=total_pages, page=page)
     else:
         flash('Please log in as an admin to access this page.')
         return redirect(url_for('admin_login'))
+
+
+
+
+
+
 
 @app.route('/tambahDataPelanggan', methods=['GET', 'POST'])
 def tambah_data_pelanggan():

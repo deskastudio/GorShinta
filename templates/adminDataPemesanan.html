@@ -139,25 +139,36 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="mt-6 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                <div>
-                    Page <span class="font-medium text-gray-700 dark:text-gray-100">1 of 10</span>
-                </div>
-                <div class="flex items-center gap-x-4">
-                    <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 bg-white text-gray-700 border rounded-md hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 sm:w-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                        </svg>
-                        <span>Previous</span>
-                    </a>
-                    <a href="#" class="flex items-center justify-center w-1/2 px-5 py-2 bg-white text-gray-700 border rounded-md hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800 sm:w-auto">
-                        <span>Next</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                        </svg>
-                    </a>
-                </div>
-            </div> -->
+            <ol class="flex justify-end gap-1 text-xs font-medium py-3 px-3">
+                {% if total_pages > 1 %}
+                    {% if page > 1 %}
+                        <li>
+                            <a href="/adminDataPemesanan?page={{ page - 1 }}" class="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180">
+                                <span class="sr-only">Prev Page</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for page_num in range(1, total_pages + 1) %}
+                        <li>
+                            <a href="/adminDataPemesanan?page={{ page_num }}" class="block size-8 rounded border {{ 'border-blue-600 bg-blue-600 text-white' if page_num == page else 'border-gray-100 bg-white text-center leading-8 text-gray-900' }}">{{ page_num }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if page < total_pages %}
+                        <li>
+                            <a href="/adminDataPemesanan?page={{ page + 1 }}" class="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180">
+                                <span class="sr-only">Next Page</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            </ol>
+            
         </section>
     </div>
 </aside>

@@ -653,6 +653,12 @@ body {
   padding-r-ight: 16px;
 }
 
+.payment:checked ~ label {
+  border-color: var(--fallback-p,oklch(var(--p)/<alpha-value>));
+  background: var(--fallback-p,oklch(var(--p)/<alpha-value>));
+  background-opacity: 8%;
+}
+
 .shipping:checked ~ label .title {
   color: var(--fallback-p,oklch(var(--p)/<alpha-value>));
 }
@@ -1404,6 +1410,23 @@ body {
   --tw-border-opacity: 0.2;
 }
 
+.range {
+  height: 1.5rem;
+  width: 100%;
+  cursor: pointer;
+  -moz-appearance: none;
+       appearance: none;
+  -webkit-appearance: none;
+  --range-shdw: var(--fallback-bc,oklch(var(--bc)/1));
+  overflow: hidden;
+  border-radius: var(--rounded-box, 1rem);
+  background-color: transparent;
+}
+
+.range:focus {
+  outline: none;
+}
+
 .select {
   display: inline-flex;
   cursor: pointer;
@@ -1997,6 +2020,65 @@ body {
   }
 }
 
+.range:focus-visible::-webkit-slider-thumb {
+  --focus-shadow: 0 0 0 6px var(--fallback-b1,oklch(var(--b1)/1)) inset, 0 0 0 2rem var(--range-shdw) inset;
+}
+
+.range:focus-visible::-moz-range-thumb {
+  --focus-shadow: 0 0 0 6px var(--fallback-b1,oklch(var(--b1)/1)) inset, 0 0 0 2rem var(--range-shdw) inset;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 0.5rem;
+  width: 100%;
+  border-radius: var(--rounded-box, 1rem);
+  background-color: var(--fallback-bc,oklch(var(--bc)/0.1));
+}
+
+.range::-moz-range-track {
+  height: 0.5rem;
+  width: 100%;
+  border-radius: var(--rounded-box, 1rem);
+  background-color: var(--fallback-bc,oklch(var(--bc)/0.1));
+}
+
+.range::-webkit-slider-thumb {
+  position: relative;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: var(--rounded-box, 1rem);
+  border-style: none;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+  appearance: none;
+  -webkit-appearance: none;
+  top: 50%;
+  color: var(--range-shdw);
+  transform: translateY(-50%);
+  --filler-size: 100rem;
+  --filler-offset: 0.6rem;
+  box-shadow: 0 0 0 3px var(--range-shdw) inset,
+      var(--focus-shadow, 0 0),
+      calc(var(--filler-size) * -1 - var(--filler-offset)) 0 0 var(--filler-size);
+}
+
+.range::-moz-range-thumb {
+  position: relative;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: var(--rounded-box, 1rem);
+  border-style: none;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+  top: 50%;
+  color: var(--range-shdw);
+  --filler-size: 100rem;
+  --filler-offset: 0.5rem;
+  box-shadow: 0 0 0 3px var(--range-shdw) inset,
+      var(--focus-shadow, 0 0),
+      calc(var(--filler-size) * -1 - var(--filler-offset)) 0 0 var(--filler-size);
+}
+
 @keyframes rating-pop {
   0% {
     transform: translateY(-0.125em);
@@ -2316,6 +2398,10 @@ body {
   pointer-events: none;
 }
 
+.visible {
+  visibility: visible;
+}
+
 .static {
   position: static;
 }
@@ -2551,6 +2637,11 @@ body {
   height: 1.25rem;
 }
 
+.size-8 {
+  width: 2rem;
+  height: 2rem;
+}
+
 .h-11 {
   height: 2.75rem;
 }
@@ -2593,6 +2684,18 @@ body {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-1\/2 {
+  height: 50%;
+}
+
+.h-3 {
+  height: 0.75rem;
+}
+
+.h-8 {
+  height: 2rem;
 }
 
 .max-h-full {
@@ -2645,6 +2748,14 @@ body {
 
 .w-full {
   width: 100%;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-3 {
+  width: 0.75rem;
 }
 
 .min-w-\[200px\] {
@@ -2753,6 +2864,10 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .grid-cols-6 {
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
@@ -2819,6 +2934,10 @@ body {
 
 .gap-6 {
   gap: 1.5rem;
+}
+
+.gap-5 {
+  gap: 1.25rem;
 }
 
 .gap-x-2 {
@@ -2962,6 +3081,10 @@ body {
 
 .border-r {
   border-right-width: 1px;
+}
+
+.border-t-2 {
+  border-top-width: 2px;
 }
 
 .border-black {
@@ -3251,6 +3374,10 @@ body {
   padding: 2px;
 }
 
+.p-0 {
+  padding: 0px;
+}
+
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -3365,6 +3492,10 @@ body {
   padding-bottom: 2.5rem;
 }
 
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
 .pe-12 {
   padding-inline-end: 3rem;
 }
@@ -3377,12 +3508,20 @@ body {
   padding-top: 2.5rem;
 }
 
+.pt-4 {
+  padding-top: 1rem;
+}
+
 .text-left {
   text-align: left;
 }
 
 .text-center {
   text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
 }
 
 .text-start {
@@ -3484,6 +3623,10 @@ body {
 
 .leading-tight {
   line-height: 1.25;
+}
+
+.leading-8 {
+  line-height: 2rem;
 }
 
 .tracking-normal {
@@ -3594,6 +3737,12 @@ body {
 
 .opacity-100 {
   opacity: 1;
+}
+
+.shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-lg {
@@ -3708,6 +3857,10 @@ body {
 
 .ease-out {
   transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.\[-moz-appearance\:_textfield\] {
+  -moz-appearance: textfield;
 }
 
 .before\:pointer-events-none::before {
@@ -4466,14 +4619,14 @@ body {
     padding-right: 2.5rem;
   }
 
-  .md\:px-16 {
-    padding-left: 4rem;
-    padding-right: 4rem;
-  }
-
   .md\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
+  }
+
+  .md\:px-16 {
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 
   .md\:text-3xl {
@@ -4484,6 +4637,11 @@ body {
   .md\:text-4xl {
     font-size: 2.25rem;
     line-height: 2.5rem;
+  }
+
+  .md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 }
 
@@ -4677,14 +4835,14 @@ body {
     grid-column: span 6 / span 6;
   }
 
-  .xl\:px-64 {
-    padding-left: 16rem;
-    padding-right: 16rem;
-  }
-
   .xl\:py-24 {
     padding-top: 6rem;
     padding-bottom: 6rem;
+  }
+
+  .xl\:px-64 {
+    padding-left: 16rem;
+    padding-right: 16rem;
   }
 }
 
@@ -4767,4 +4925,22 @@ body {
     --tw-text-opacity: 1;
     color: rgb(229 231 235 / var(--tw-text-opacity));
   }
+}
+
+.\[\&\:\:-webkit-inner-spin-button\]\:m-0::-webkit-inner-spin-button {
+  margin: 0px;
+}
+
+.\[\&\:\:-webkit-inner-spin-button\]\:appearance-none::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+          appearance: none;
+}
+
+.\[\&\:\:-webkit-outer-spin-button\]\:m-0::-webkit-outer-spin-button {
+  margin: 0px;
+}
+
+.\[\&\:\:-webkit-outer-spin-button\]\:appearance-none::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+          appearance: none;
 }
