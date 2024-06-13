@@ -205,12 +205,14 @@ def selectTime(_id):
         selected_sport = request.form.get('selected_sport')
         selected_court = request.form.get('selected_court')
         selected_price = request.form.get('selected_price')
+        selected_duration = request.form.get('selected_duration')
         
         # Cek apakah waktu dan tanggal yang dipilih sudah dipesan
         existing_booking = db.payments.find_one({
             'selected_date': selected_date,
             'selected_time': selected_time,
-            'selected_court': selected_court
+            'selected_court': selected_court,
+            'selected_duration': selected_duration
         })
         
         if existing_booking:
@@ -226,7 +228,8 @@ def selectTime(_id):
             'selected_time': selected_time,
             'selected_sport': selected_sport,
             'selected_court': selected_court,
-            'selected_price': selected_price
+            'selected_price': selected_price,
+            'selected_duration': selected_duration
         }
         
         # Simpan pesan alert ke sesi
@@ -276,6 +279,7 @@ def payment():
             'selected_sport': booking_data['selected_sport'],
             'selected_court': booking_data['selected_court'],
             'selected_price': booking_data['selected_price'],
+            'selected_duration': booking_data['selected_duration'],
             'payment_type': payment_type,
             'payment_method': payment_method,
             'payment_proof': nama_file_foto
@@ -352,7 +356,7 @@ def datadiri():
         return redirect(url_for('datadiri'))
 
     user = users_collection.find_one({'_id': ObjectId(session['user_id'])})
-    currentPhoto = user.get('foto') if user else ''  # Definisikan variabel currentPhoto
+    currentPhoto = user.get('foto') if user else ''
     return render_template('dataDiri.html', fullname=user.get('fullname'), users=user, currentPhoto=currentPhoto)
 
 

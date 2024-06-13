@@ -133,19 +133,20 @@
         font-size: 16px;
         margin-bottom: 5px;
       }
+
+      .selected-time-slot {
+        background-color: #357ae8 !important;
+      }
     </style>
     <script>
-      // JavaScript code
       document.addEventListener("DOMContentLoaded", function () {
-        // FullCalendar initialization
         const calendarEl = document.getElementById("calendar");
         const calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: "dayGridMonth",
           selectable: true,
           dateClick: function (info) {
             const today = new Date();
-            // Check if the clicked date is in the past
-            if (info.date < today.setHours(0,0,0,0)) {
+            if (info.date < today.setHours(0, 0, 0, 0)) {
               Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -153,14 +154,14 @@
               });
               return;
             }
-            // Remove any existing buttons
+      
             $(".date-button").remove();
-            // Create new buttons beside clicked date
+      
             const availableTimes = getAvailableTimes();
             availableTimes.forEach((time) => {
-              $(`<button class="date-button" data-lapangan-id="${info.lapanganId}">${time}</button>`).appendTo($(".time-grid"));
+              $(`<button class="date-button">${time}</button>`).appendTo($(".time-grid"));
             });
-            // Set the selected date and day in variables
+      
             const selectedDate = info.date.toLocaleDateString("en-GB", {
               day: "2-digit",
               month: "2-digit",
@@ -169,49 +170,68 @@
             const selectedDay = info.date.toLocaleDateString("en-GB", {
               weekday: "long",
             });
-            // Display selected day and date together
+      
             $("#selected-date").text(selectedDay + ", " + selectedDate);
           },
         });
         calendar.render();
-
-        // Function to get available times from 10am to 1am
+      
         function getAvailableTimes() {
           const times = [];
           for (let i = 10; i <= 24; i++) {
-            const hour = i < 13 ? i : i - 12; // Convert to 12-hour format
-            const ampm = i < 12 ? "AM" : "PM"; // Determine AM or PM
+            const hour = i < 13 ? i : i - 12;
+            const ampm = i < 12 ? "AM" : "PM";
             const timeString = hour + ":00 " + ampm;
             times.push(timeString);
           }
           return times;
         }
-
+      
         $(document).on("click", ".date-button", function () {
-          $("#confirmation-form").show();
-          $(".selected-time").text($(this).text());
-          const selectedDate = $("#selected-date").text();
-          $("#selected_date_display").val(selectedDate); // Menggunakan .val() untuk mengatur nilai input
-          const selectedTime = $(this).text();
-          $("#selected_time_display").val(selectedTime); // Menggunakan .val() untuk mengatur nilai input
-          
-          $('html, body').animate({
-            scrollTop: $("#confirmation-form").offset().top
-          }, 500);
+          $(this).toggleClass("selected-time-slot");
+          updateSelectedTimes();
         });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-      var alertMessage = "{{ alert_message }}";
-      if (alertMessage) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: alertMessage
-          });
-      }
-  });
-
+      
+        function updateSelectedTimes() {
+          const selectedTimes = $(".selected-time-slot").map(function () {
+            return $(this).text();
+          }).get();
+      
+          const selectedDate = $("#selected-date").text();
+          $("#selected_date_display").val(selectedDate);
+      
+          if (selectedTimes.length > 0) {
+            const totalHours = selectedTimes.length;
+            $("#selected_duration_display").val(totalHours + " hours");
+      
+            const pricePerHour = parseInt("{{ dataLapangan[0].harga }}".replace(/\D/g, ''), 10);
+            const totalPrice = pricePerHour * totalHours;
+            $("#selected_price_display").val("Rp. " + totalPrice.toLocaleString());
+      
+            // Update the selected times field
+            $("#selected_time_display").val(selectedTimes.join(", "));
+      
+            $("#confirmation-form").show();
+            $('html, body').animate({
+              scrollTop: $("#confirmation-form").offset().top
+            }, 500);
+          } else {
+            $("#confirmation-form").hide();
+          }
+        }
+      
+        document.addEventListener('DOMContentLoaded', function() {
+          var alertMessage = "{{ alert_message }}";
+          if (alertMessage) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil!',
+              text: alertMessage
+            });
+          }
+        });
+      });
+      
     </script>
   </head>
   <body style="background-image: url('../static/img/booking.png')" class="bg-cover bg-center min-h-screen">
@@ -264,6 +284,10 @@
               <input id="selected_date_display" class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_date" readonly>
             </div>
             <div>
+              <label for="selected_duration" class="block text-gray-600">Durasi:</label>
+              <input id="selected_duration_display" class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_duration" readonly>
+            </div>
+            <div>
               <label for="selected_time" class="block text-gray-600">Jam:</label>
               <input id="selected_time_display" class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_time" readonly>
             </div>
@@ -276,8 +300,8 @@
               <input class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_court" value="{{ dataLapangan[0].nama }}" readonly>
             </div>
             <div>
-              <label class="block text-gray-600">Harga Lapangan:</label>
-              <input class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_price" value="Rp. {{ dataLapangan[0].harga }}" readonly>
+              <label class="block text-gray-600">Harga Total:</label>
+              <input id="selected_price_display" class="block w-full mt-1 p-2 border border-gray-300 rounded-md text-gray-800" name="selected_price" readonly>
             </div>
             <div class="mt-4 md:col-span-2">
               <button id="confirmPaymentBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 w-full transition-transform transform hover:scale-105" type="submit">Konfirmasi Pemesanan</button>
