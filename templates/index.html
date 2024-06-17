@@ -109,97 +109,20 @@
 <!-- information section end -->
 
 <!-- Galeri section start -->
-<!-- <section id="galeri" class="bg-cover bg-center min-h-screen py-20" style="background-image: url('./static/img/maps.png');">
+<section id="galeri" class="bg-cover bg-center min-h-screen py-20" style="background-image: url('./static/img/maps.png');">
   <h1 class="text-center text-5xl sm:text-4xl lg:text-5xl font-extrabold mb-12 text-black mt-10 tracking-wide drop-shadow-lg">Galeri Gor <span class="text-teal-600">Shinta</span></h1>
-  {% for data in dataGaleri %}
-  <div class="grid grid-cols-2 gap-4 md:grid-cols-4 container mx-auto lg:px-40">
-    <div class="grid gap-4">
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center"
-          src="../static/img/{{data.foto}}" alt="{{ data.nama }}"
-        />
+  <div class="container mx-auto">
+    
+      <div class="flex justify-center mb-4">
+          <img id="featured-img" class="w-2/3 h-96 object-cover" src="https://via.placeholder.com/600x400" alt="Featured Image">
       </div>
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center "
-          src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-          alt="gallery-photo"
-        />
+      <div class="grid grid-cols-5 gap-4">
+        {% for data in dataGaleri %}
+          <img class="gallery-thumbnail w-full h-32 object-cover cursor-pointer" src="../static/img/{{ data.foto }}" alt="{{ data.judul }}">
+        {% endfor %}
       </div>
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center"
-          src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=2940&amp;q=80"
-          alt="gallery-photo"
-        />
-      </div>
-    </div>
-    <div class="grid gap-4">
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center"
-          src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=687&amp;q=80"
-          alt="gallery-photo"
-        />
-      </div>
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center"
-          src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80"
-          alt="gallery-photo"
-        />
-      </div>
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center "
-          src="https://docs.material-tailwind.com/img/team-3.jpg"
-          alt="gallery-photo"
-        />
-      </div>
-    </div>
-    <div class="grid gap-4">
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center"
-          src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=2940&amp;q=80"
-          alt="gallery-photo"
-        />
-      </div>
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center "
-          src="https://docs.material-tailwind.com/img/team-3.jpg"
-          alt="gallery-photo"
-        />
-      </div>
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center"
-          src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=687&amp;q=80"
-          alt="gallery-photo"
-        />
-      </div>
-    </div>
-    <div class="grid gap-4">
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center"
-          src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=687&amp;q=80"
-          alt="gallery-photo"
-        />
-      </div>
-      <div>
-        <img
-          class="h-auto max-w-full rounded-lg object-cover object-center"
-          src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
-          alt="gallery-photo"
-        />
-      </div>
-    </div>
   </div>
-  {% endfor %}
-</section> -->
+</section>
 <!-- Galeri section end -->
 
     <!-- tentang kami section start -->
@@ -384,5 +307,16 @@
     <!-- footer start -->
     {% include "footer.html" %}
     <!-- footer end -->
+
+    <script>
+      $(document).ready(function() {
+        $('.gallery-thumbnail').on('click', function() {
+          const src = $(this).attr('src');
+          $('#featured-img').fadeOut(500, function() {
+            $(this).attr('src', src).fadeIn(500);
+          });
+        });
+      });
+    </script>
   </body>
 </html>

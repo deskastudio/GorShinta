@@ -87,9 +87,6 @@
                     <h2 class="text-lg font-medium text-gray-800 dark:text-white">Data Pemesanan</h2>
                     <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">Gor Shinta</span>
                 </div>
-                <!-- <div>
-                    <a href="/tambahDataLapanganFutsal" class="text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 focus:outline-none px-5 py-2.5 rounded-lg shadow-lg transform transition-transform hover:scale-105">Tambah Pemesanan</a>
-                </div> -->
             </div>
             <div class="overflow-x-auto">
                 <div class="inline-block min-w-full align-middle">
@@ -126,7 +123,7 @@
                                     <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ data.payment_method }}</td>
                                     <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">
                                         {% if data.payment_proof %}
-                                        <img src="{{ url_for('static', filename='img/' ~ data.payment_proof) }}" alt="Bukti Pembayaran" width="70">
+                                        <img src="{{ url_for('static', filename='img/' ~ data.payment_proof) }}" alt="Bukti Pembayaran" width="70" style="cursor: pointer;" onclick="showModal('{{ url_for('static', filename='img/' ~ data.payment_proof) }}')">
                                         {% else %}
                                         Tidak ada bukti
                                         {% endif %}
@@ -141,6 +138,8 @@
                     </div>
                 </div>
             </div>
+
+
             <ol class="flex justify-end gap-1 text-xs font-medium py-3 px-3">
                 {% if total_pages > 1 %}
                     {% if page > 1 %}
@@ -170,9 +169,38 @@
                     {% endif %}
                 {% endif %}
             </ol>
+
+             <!-- Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center hidden transition-opacity duration-300 ease-in-out">
+        <div class="bg-white p-4 rounded shadow-lg relative">
+            <span class="close cursor-pointer absolute top-0 right-0 mt-2 mr-2 text-black text-xl" onclick="closeModal()">&times;</span>
+            <img id="modalImage" src="" alt="Bukti Pembayaran" class="w-1/2 h-1/2 object-contain">
+        </div>
+    </div>
             
         </section>
     </div>
 </aside>
+
+<script>
+    // JavaScript for handling the modal
+    function showModal(imageSrc) {
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = imageSrc;
+        modal.classList.remove('hidden');
+    }
+
+    document.querySelector('.close').onclick = function() {
+        document.getElementById('imageModal').classList.add('hidden');
+    };
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('imageModal');
+        if (event.target == modal) {
+            modal.classList.add('hidden');
+        }
+    };
+</script>
 </body>
 </html>

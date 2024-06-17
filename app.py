@@ -89,6 +89,7 @@ def index():
     dataKontak = dataKontak_collection.find_one()
     dataTentang = dataTentang_collection.find_one()
     dataReview = dataReview_collection.find({})
+    dataGaleri = dataGaleri_collection.find({})
     alert_message = session.pop('alert_message', 'Selamat Datang di Gor Shinta semoga Anda senang')
     return render_template('index.html', alert_message=alert_message, dataLapangan=dataLapangan, dataGaleri=dataGaleri, dataKontak=dataKontak, dataTentang=dataTentang, dataReview=dataReview)
 

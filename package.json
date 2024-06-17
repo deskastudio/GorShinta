@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "@material-tailwind/html": "^2.2.2",
+    "flowbite": "^2.3.0",
     "fullcalendar": "^6.1.11",
     "tailgrids": "^2.2.0"
   }
