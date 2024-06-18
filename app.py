@@ -3,6 +3,7 @@ from curses import flash
 from datetime import timedelta
 import datetime
 from io import BytesIO
+import locale
 import os
 import re
 import uuid
@@ -44,12 +45,12 @@ dataReview_collection = db.dataReview
 dataPembayaran_collection = db.dataPembayaran
 dataAdmin_collection = db.dataAdmin
 
-UPLOAD_FOLDER = '/static'  # Ganti dengan path folder upload Anda
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'heic'}  # Ekstensi file yang diizinkan
-
 # Inisialisasi Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+# Set the locale to Indonesian
+locale.setlocale(locale.LC_TIME, 'id_ID.UTF-8')
 
 class User(UserMixin):
     pass
@@ -216,10 +217,10 @@ def selectTime(_id):
             'selected_duration': selected_duration
         })
         
-        if existing_booking:
+        if existing_booking is not None:
             alert_message = 'Waktu dan tanggal yang dipilih sudah dipesan. Silakan pilih waktu yang lain.'
             return render_template('selectTime.html', fullname=fullname, phone_number=phone_number, email=email, dataLapangan=dataLapangan, alert_message=alert_message)
-        
+
         # Simpan data pemesanan ke sesi
         session['booking_data'] = {
             'fullname': fullname,
@@ -234,12 +235,13 @@ def selectTime(_id):
         }
         
         # Simpan pesan alert ke sesi
-        session['alert_message'] = 'Berhasil di pesanan. Silahkan pilih metode pembayaran.'
+        session['alert_message'] = 'Berhasil dipesan. Silahkan pilih metode pembayaran.'
         
         # Alihkan ke halaman pembayaran
         return redirect(url_for('payment'))
     
     return render_template('selectTime.html', fullname=fullname, phone_number=phone_number, email=email, dataLapangan=dataLapangan, alert_message=alert_message)
+
 
 @app.route('/payment', methods=['GET', 'POST'])
 @login_required
@@ -432,7 +434,7 @@ def edit_data_lapangan(_id):
         return redirect(url_for('admin_data_lapangan'))
     
     data = db.dataLapangan.find_one({'_id': ObjectId(_id)})
-    return render_template('tambahDataLapangan.html', data=data)
+    return render_template('editDataLapangan.html', data=data)
 
 @app.route('/hapusDataLapangan/<string:_id>', methods=["GET", "POST"])
 def delete_data_lapangan(_id):
@@ -738,7 +740,9 @@ def edit_data_galeri(_id):
             }})
         
         return redirect(url_for('galeri'))
-    return render_template('tambahDataGaleri.html')
+    
+    data = db.dataGaleri.find_one({'_id': ObjectId(_id)})
+    return render_template('editDataGaleri.html', data=data)
 
 @app.route('/hapusDataGaleri/<string:_id>', methods=["GET", "POST"])
 def delete_data_galeri(_id):
@@ -914,7 +918,9 @@ def edit_data_pembayaran(_id):
         }})
         
         return redirect(url_for('admin_pembayaran'))
-    return render_template('tambahDataPembayaran.html')
+    
+    data = db.dataPembayaran.find_one({'_id': ObjectId(_id)})
+    return render_template('editDataPembayaran.html', data=data)
 
 
 # LOGIN SEBAGAI ADMIN

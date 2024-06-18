@@ -56,12 +56,12 @@
                     <img src="../static/img/{{data.foto}}" alt="{{ data.nama }}" class="rounded-xl shadow-md" />
                 </figure>
                 <div class="card-body items-center text-center p-6">
-                    <h2 class="card-title bg-gray-900 text-gray-100 py-2 px-6 rounded-md">{{ data.jenis }}</h2>
+                    <h2 class="card-title bg-gray-500 text-gray-100 py-2 px-6 rounded-md">{{ data.jenis }}</h2>
                     <div class="flex justify-between items-center w-full px-6">
                         <h3 class="text-xl font-semibold text-gray-800">{{data.nama}}</h3>
                         <h4 class="text-lg text-green-500">Rp. {{data.harga}}</h4>
                     </div>
-                    <p class="text-gray-700">{{ data.deskripsi }}</p>
+                    <!-- <p class="text-gray-700">{{ data.deskripsi }}</p> -->
                     <div class="card-actions">
                         <button class="btn btn-primary bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition" type="button" onclick="window.location.href='/selectTime/{{data._id}}'">Pesan Sekarang</button>
                     </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -154,28 +154,28 @@
               });
               return;
             }
-      
+  
             $(".date-button").remove();
-      
+  
             const availableTimes = getAvailableTimes();
             availableTimes.forEach((time) => {
               $(`<button class="date-button">${time}</button>`).appendTo($(".time-grid"));
             });
-      
-            const selectedDate = info.date.toLocaleDateString("en-GB", {
+  
+            const selectedDate = info.date.toLocaleDateString("id-ID", {
               day: "2-digit",
-              month: "2-digit",
+              month: "long",
               year: "numeric",
             });
-            const selectedDay = info.date.toLocaleDateString("en-GB", {
+            const selectedDay = info.date.toLocaleDateString("id-ID", {
               weekday: "long",
             });
-      
+  
             $("#selected-date").text(selectedDay + ", " + selectedDate);
           },
         });
         calendar.render();
-      
+  
         function getAvailableTimes() {
           const times = [];
           for (let i = 10; i <= 24; i++) {
@@ -186,31 +186,31 @@
           }
           return times;
         }
-      
+  
         $(document).on("click", ".date-button", function () {
           $(this).toggleClass("selected-time-slot");
           updateSelectedTimes();
         });
-      
+  
         function updateSelectedTimes() {
           const selectedTimes = $(".selected-time-slot").map(function () {
             return $(this).text();
           }).get();
-      
+  
           const selectedDate = $("#selected-date").text();
           $("#selected_date_display").val(selectedDate);
-      
+  
           if (selectedTimes.length > 0) {
             const totalHours = selectedTimes.length;
-            $("#selected_duration_display").val(totalHours + " hours");
-      
+            $("#selected_duration_display").val(totalHours + " jam");
+  
             const pricePerHour = parseInt("{{ dataLapangan[0].harga }}".replace(/\D/g, ''), 10);
             const totalPrice = pricePerHour * totalHours;
             $("#selected_price_display").val("Rp. " + totalPrice.toLocaleString());
-      
+  
             // Update the selected times field
             $("#selected_time_display").val(selectedTimes.join(", "));
-      
+  
             $("#confirmation-form").show();
             $('html, body').animate({
               scrollTop: $("#confirmation-form").offset().top
@@ -219,19 +219,17 @@
             $("#confirmation-form").hide();
           }
         }
-      
-        document.addEventListener('DOMContentLoaded', function() {
-          var alertMessage = "{{ alert_message }}";
-          if (alertMessage) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Berhasil!',
-              text: alertMessage
-            });
-          }
-        });
+  
+        // Display alert message if any
+        const alertMessage = "{{ alert_message }}";
+        if (alertMessage) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: alertMessage
+          });
+        }
       });
-      
     </script>
   </head>
   <body style="background-image: url('../static/img/booking.png')" class="bg-cover bg-center min-h-screen">

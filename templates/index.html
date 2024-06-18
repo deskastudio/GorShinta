@@ -6,7 +6,7 @@
 
     <link href="../static/img/sinta.png" rel="icon" type="image/x-icon" />
 
-    <title>Home Page | Gor Sinta</title>
+    <title>Beranda | Gor Sinta</title>
     <link href="../static/src/output.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -96,7 +96,7 @@
   <div class="absolute inset-0"></div>
   <div class="relative mx-auto max-w-screen-xl px-4 py-32 lg:py-48">
     <div class="border-4 rounded-3xl border-black backdrop-filter backdrop-blur-300 backdrop-blur-sm">
-      <h1 class="text-center text-4xl lg:text-5xl font-extrabold mb-12 text-black mt-10 tracking-wide drop-shadow-lg">Fasilitas</h1>
+      <h1 class="text-center text-5xl sm:text-4xl lg:text-5xl font-extrabold mb-12 text-black mt-10 tracking-wide drop-shadow-lg">Fasilitas Gor <span class="text-teal-600">Shinta</span></h1>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         <img src="./static/img/mushola.png" alt="Mushola">
         <img src="./static/img/foodcourt.png" alt="Food Court">
@@ -109,12 +109,12 @@
 <!-- information section end -->
 
 <!-- Galeri section start -->
-<section id="galeri" class="bg-cover bg-center min-h-screen py-20" style="background-image: url('./static/img/maps.png');">
+<section id="galeri" class="bg-cover bg-center min-h-screen py-20" style="background-image: url('./static/img/galeri.png');">
   <h1 class="text-center text-5xl sm:text-4xl lg:text-5xl font-extrabold mb-12 text-black mt-10 tracking-wide drop-shadow-lg">Galeri Gor <span class="text-teal-600">Shinta</span></h1>
   <div class="container mx-auto">
     
       <div class="flex justify-center mb-4">
-          <img id="featured-img" class="w-2/3 h-96 object-cover" src="https://via.placeholder.com/600x400" alt="Featured Image">
+          <img id="featured-img" class="w-2/3 h-96 object-cover" src="../static/img/pintugor.jpg" alt="Featured Image">
       </div>
       <div class="grid grid-cols-5 gap-4">
         {% for data in dataGaleri %}
@@ -169,7 +169,7 @@
     <section id="kontak" class="bg-cover bg-center min-h-screen" style="background-image: url('./static/img/maps.png')">
       <div class="container px-6 py-12 mx-auto">
           <div>
-              <p class="font-bold text-teal-600 dark:text-white text-xl">Contact us</p>
+              <p class="font-bold text-teal-600 dark:text-white text-xl">Kontak Kami</p>
   
               <h1 class="mt-2 text-3xl font-bold text-gray-800 md:text-3xl dark:text-white">Gor <span class="text-teal-600">Shinta</span></h1>
   
@@ -198,7 +198,7 @@
                           </svg>
                       </span>
                       
-                      <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white">Location</h2>
+                      <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white">Lokasi</h2>
                       <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Jangan sungkan untuk mampir ke pos jaga kita, yuk!.</p>
                       <p class="mt-2 text-sm text-blue-500 dark:text-blue-400">{{ dataKontak.alamat_admin }}</p>
                   </div>
@@ -210,7 +210,7 @@
                           </svg>
                       </span>
                       
-                      <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white">Phone</h2>
+                      <h2 class="mt-4 text-base font-medium text-gray-800 dark:text-white">Telepon</h2>
                       <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Setiap harinya, dari pukul 1 siang hingga 1 dini hari.</p>
                       <p class="mt-2 text-sm text-blue-500 dark:text-blue-400">{{ dataKontak.noTelepon_admin }}</p>
                   </div>

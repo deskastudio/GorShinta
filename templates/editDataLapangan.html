@@ -1,67 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Booking Page | Gor Sinta</title>
-    <link href="./static/src/output.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Page | Gor Sinta</title>
+  <link href="../static/src/output.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // jQuery script to toggle sidebar for mobile screens
+    $(document).ready(function () {
+      $('#sidebar-toggle').click(function () {
+        $('.lg\\:block').toggle();
+      });
+    });
+  </script>
+</head>
+<body class="bg-gray-100">
 
-    <script>
-        // jQuery script to toggle sidebar for mobile screens
-        $(document).ready(function () {
-            $('#sidebar-toggle').click(function () {
-                $('.lg\\:block').toggle();
-            });
-        });
-    </script>
-  </head>
-  <body class="bg-gray-100">
+<!-- Include asideAdmin.html for sidebar -->
+{% include "asideAdmin.html" %}
 
-    {% include "asideAdmin.html" %}
-        <!-- form admin start -->
-        <!-- Form untuk menambahkan data lapangan -->
-    <div>
-        <form action="editDataLapanganFutsal/{{data._id}}" method="POST" enctype="multipart/form-data">
-            <div class="flex flex-col gap-y-4">
-                <div>
-                    <label for="jenis-lapangan" class="block text-sm font-medium text-gray-700">Jenis Lapangan</label>
-                    <select id="jenis-lapangan" name="jenis_lapangan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="Futsal">Futsal</option>
-                        <option value="Badminton">Badminton</option>
-                        <!-- Tambahkan opsi untuk jenis lapangan lainnya jika diperlukan -->
-                    </select>
-                </div>
-                <div>
-                    <label for="foto-lapangan" class="block text-sm font-medium text-gray-700">Foto Lapangan</label>
-                    <input type="file" id="foto-lapangan" name="foto_lapangan" accept=".png,.jpg,.jpeg" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{data.foto}}">
-                </div>
-                <div>
-                    <label for="harga" class="block text-sm font-medium text-gray-700">Harga</label>
-                    <input type="number" id="harga" name="harga_lapangan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{data.harga}}">
-                </div>
-                <div>
-                    <label for="nama-lapangan" class="block text-sm font-medium text-gray-700">Nama Lapangan</label>
-                    <input type="text" id="nama-lapangan" name="nama_lapangan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{data.nama}}">
-                </div>
-                <div>
-                    <label for="nama-lapangan" class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                    <input type="text" id="deskripsi-lapangan" name="deskripsi_lapangan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{data.deskripsi}}">
-                </div>
-                <div class="flex justify-end">
-                    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Tambah</button>
-                </div>
-            </div>
-        </form>
+<!-- Main content section -->
+<div class="container mx-auto px-4 py-8">
+  <!-- Form for editing field data -->
+  <form action="editDataLapanganFutsal/{{data._id}}" method="POST" enctype="multipart/form-data" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div class="mb-4">
+      <label for="jenis-lapangan" class="block text-sm font-medium text-gray-700">Jenis Lapangan</label>
+      <select id="jenis-lapangan" name="jenis_lapangan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <option value="Futsal">Futsal</option>
+        <option value="Badminton">Badminton</option>
+        <!-- Add more options for other types of fields if needed -->
+      </select>
     </div>
+    <div class="mb-4">
+      <label for="foto-lapangan" class="block text-sm font-medium text-gray-700">Foto Lapangan</label>
+      <input type="file" id="foto-lapangan" name="foto_lapangan" accept=".png,.jpg,.jpeg" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{data.foto}}">
+    </div>
+    <div class="mb-4">
+      <label for="harga" class="block text-sm font-medium text-gray-700">Harga</label>
+      <input type="number" id="harga" name="harga_lapangan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{data.harga}}">
+    </div>
+    <div class="mb-4">
+      <label for="nama-lapangan" class="block text-sm font-medium text-gray-700">Nama Lapangan</label>
+      <input type="text" id="nama-lapangan" name="nama_lapangan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{data.nama}}">
+    </div>
+    <div class="mb-4">
+      <label for="deskripsi-lapangan" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+      <input type="text" id="deskripsi-lapangan" name="deskripsi_lapangan" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{data.deskripsi}}">
+    </div>
+    <div class="flex justify-end">
+      <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Edit</button>
+    </div>
+  </form>
+</div>
 
-        <!-- form admin end -->
-    </aside>
-    <!-- sidebar end  -->
-
-    <!-- hero section start -->
-    
-    <!-- hero section end -->
-
-  </body>
+</body>
 </html>

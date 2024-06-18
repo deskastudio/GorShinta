@@ -16,9 +16,14 @@
     <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <div class="sm:flex sm:items-center sm:justify-between">
             <div class="flex flex-col text-center sm:text-left justify-center items-center sm:items-start">
-                <div class="ms-5">
-                    <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">Let's go to booking</h1>
-                    <p class="mt-1.5 text-sm text-gray-500">We waiting for you 🤗🎉</p>
+                <div class="ms-5 flex items-center justify-center">
+                    <div class="mx-3">
+                        <img src="../static/img/sinta.png" alt="" width="50">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">Ayoo segera pesan</h1>
+                        <p class="mt-1.5 text-sm text-gray-500">Kami tunggu kedatangan Anda 🤗🎉</p>
+                    </div>
                 </div>
             </div>
             <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-4 sm:mt-0">
@@ -30,8 +35,8 @@
                 <div class="flex gap-1 items-center">
                     <span id="currentDateTime" class="text-sm font-medium"></span>
                 </div>
-                <button class="block rounded-lg bg-teal-600 px-6 py-3 text-sm font-medium text-white shadow-lg transform transition hover:-translate-y-1 hover:bg-teal-700 focus:outline-none focus:ring" type="button" onclick="confirmSignOut()">Sign Out</button>
-                <button class="block rounded-lg bg-red-600 px-6 py-3 text-sm font-medium text-white shadow-lg transform transition hover:-translate-y-1 hover:bg-red-700 focus:outline-none focus:ring" type="button" onclick="window.location.href='/userReviewLapangan'">Review</button>
+                <button class="block rounded-lg bg-teal-600 px-6 py-3 text-sm font-medium text-white shadow-lg transform transition hover:-translate-y-1 hover:bg-teal-700 focus:outline-none focus:ring" type="button" onclick="confirmSignOut()">Keluar</button>
+                <button class="block rounded-lg bg-red-600 px-6 py-3 text-sm font-medium text-white shadow-lg transform transition hover:-translate-y-1 hover:bg-red-700 focus:outline-none focus:ring" type="button" onclick="window.location.href='/userReviewLapangan'">Berikan Ulasan</button>
             </div>
         </div>
     </div>
@@ -41,7 +46,7 @@
 <script>
     function updateDateTime() {
         var currentDate = new Date();
-        var dateTimeString = currentDate.toLocaleString('en-US', { 
+        var options = { 
             weekday: 'long', 
             month: 'long', 
             day: 'numeric', 
@@ -50,7 +55,8 @@
             minute: 'numeric', 
             second: 'numeric', 
             hour12: true 
-        });
+        };
+        var dateTimeString = currentDate.toLocaleString('id-ID', options);
         document.getElementById('currentDateTime').textContent = dateTimeString;
     }
     setInterval(updateDateTime, 1000);
@@ -58,13 +64,13 @@
 
     function confirmSignOut() {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak dapat mengembalikan ini!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, sign out!'
+            confirmButtonText: 'Ya, keluar!'
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = '/logout';

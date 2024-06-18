@@ -42,14 +42,14 @@
     <!-- navbar end  -->
 
     <!-- hero section start -->
-    <section class="container px-40 py-10 mx-auto">
-        <h1 class="text-5xl font-bold text-gray-900 text-center pb-10">Profile Saya</h1>
+    <section class="container lg:px-40 md:px-12 py-10 mx-auto">
+        <h1 class="text-5xl font-bold text-gray-900 text-center pb-10">Profil Saya</h1>
         <form action="{{ url_for('datadiri') }}" method="POST" enctype="multipart/form-data" class="flow-root rounded-lg border border-gray-100 py-3 shadow-sm">
             <dl class="-my-3 divide-y divide-gray-100 text-sm">
                 <div class="grid grid-cols-1 gap-1 p-3 bg-gray-100 sm:grid-cols-3 sm:gap-4">
                     <dt class="font-medium text-gray-900">Photo</dt>
                     <dd class="text-gray-700 sm:col-span-2">
-                        <label for="photoInput" class="cursor-pointer inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Choose Photo</label>
+                        <label for="photoInput" class="cursor-pointer inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Masukkan Photo</label>
                         <input name="foto" type="file" id="photoInput" class="hidden" onchange="previewPhoto(this)">
                         <img id="photoPreview" src="{{ url_for('static', filename='img/imgProfile/' + (users.foto if users else '')) }}" alt="Preview" style="display: none; max-width: 100%; height: auto;" width="200px" class="py-4">
                     </dd>
@@ -81,7 +81,7 @@
             </dl>
             <div class="flex justify-end mt-4 gap-3">
                 <button type="submit" class="group flex items-center gap-4 rounded-lg border border-red-600 bg-red-600 px-5 py-3 transition-colors hover:bg-transparent focus:outline-none focus:ring">
-                    <span class="font-medium text-white transition-colors group-hover:text-red-600 group-active:text-red-500">Update Profile</span>
+                    <span class="font-medium text-white transition-colors group-hover:text-red-600 group-active:text-red-500">Perbarui</span>
                 </button>
             </div>
         </form>
