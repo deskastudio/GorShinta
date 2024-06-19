@@ -114,11 +114,11 @@
   <div class="container mx-auto">
     
       <div class="flex justify-center mb-4">
-          <img id="featured-img" class="w-2/3 h-96 object-cover" src="../static/img/pintugor.jpg" alt="Featured Image">
+          <img id="featured-img" class="w-2/3 h-96 object-cover shadow-2xl" src="../static/img/pintugor.jpg" alt="Featured Image">
       </div>
       <div class="grid grid-cols-5 gap-4">
         {% for data in dataGaleri %}
-          <img class="gallery-thumbnail w-full h-32 object-cover cursor-pointer" src="../static/img/{{ data.foto }}" alt="{{ data.judul }}">
+          <img class="gallery-thumbnail w-full h-32 object-cover cursor-pointer shadow-lg" src="../static/img/{{ data.foto }}" alt="{{ data.judul }}">
         {% endfor %}
       </div>
   </div>
