@@ -1,37 +1,34 @@
-import calendar
 from curses import flash
-from datetime import timedelta
 import datetime
 from io import BytesIO
 import locale
 import os
+from posixpath import dirname, join
 import re
-import uuid
 import bcrypt
 from bson import ObjectId
-from flask import Flask, jsonify, make_response, render_template, request, redirect, send_file, url_for, session, flash
-from flask_wtf import FlaskForm
-import pymongo
-from wtforms import StringField, EmailField, PasswordField
-from wtforms.validators import InputRequired, Length, Email
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, jsonify, make_response, render_template, request, redirect, url_for, session, flash
+from flask.cli import load_dotenv
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
 from pymongo import MongoClient
-from flask_pymongo import PyMongo
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from werkzeug.utils import secure_filename
 from reportlab.lib.pagesizes import letter, landscape
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
-from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib import colors
 
 # from distutils.command import build
 app = Flask(__name__)
 app.secret_key = 'sjdcasjbcsabfh'
 
-password = 'sparta'
-cxn_str = f"mongodb://test:{password}@ac-zunxf5x-shard-00-00.k72y7zu.mongodb.net:27017,ac-zunxf5x-shard-00-01.k72y7zu.mongodb.net:27017,ac-zunxf5x-shard-00-02.k72y7zu.mongodb.net:27017/?ssl=true&replicaSet=atlas-j2cl22-shard-0&authSource=admin&retryWrites=true&w=majority&appName=Cluster0"
-client = MongoClient(cxn_str)
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  str(os.environ.get("DB_NAME"))
+
+client = MongoClient(MONGODB_URI)
+db = client[DB_NAME]
 
 db = client.gor_sinta
 users_collection = db.users
