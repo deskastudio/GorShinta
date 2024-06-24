@@ -26,6 +26,10 @@
                 preview.src = ''; // Kosongkan pratinjau jika tidak ada file yang dipilih
             }
         }
+
+        function goBack() {
+            window.history.back(); // Fungsi untuk kembali ke halaman sebelumnya
+        }
     </script>
   </head>
   <body class="bg-cover bg-center min-h-screen" style="background-image: url('./static/img/profile.png')">
@@ -70,6 +74,9 @@
         <div class="flex justify-end mt-4 gap-3">
             <button type="submit" class="group flex items-center gap-4 rounded-lg border border-red-600 bg-red-600 px-5 py-3 transition-colors hover:bg-transparent focus:outline-none focus:ring">
                 <span class="font-medium text-white transition-colors group-hover:text-red-600 group-active:text-red-500">Submit</span>
+            </button>
+            <button type="button" onclick="goBack()" class="group flex items-center gap-4 rounded-lg border border-gray-400 bg-gray-400 px-5 py-3 transition-colors hover:bg-transparent focus:outline-none focus:ring">
+                <span class="font-medium text-white transition-colors group-hover:text-gray-600 group-active:text-gray-500">Kembali</span>
             </button>
         </div>
     </form>

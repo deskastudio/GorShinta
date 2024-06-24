@@ -28,11 +28,15 @@
         }
 
         $(document).ready(function() {
-            var currentPhoto = "{{ users.foto if users else '' }}";
+            var currentPhoto = "{{ users.foto if users and users.foto else '' }}";
             if (currentPhoto) {
-                $('#photoPreview').attr('src', "{{ url_for('static', filename='img/imgProfile/' + currentPhoto) }}").show();
+                $('#photoPreview').attr('src', "{{ url_for('static', filename='img/imgProfile/') }}" + currentPhoto).show();
             }
         });
+
+        function goBack() {
+            window.history.back(); // Fungsi untuk kembali ke halaman sebelumnya
+        }
     </script>
 </head>
 <body class="bg-cover bg-center min-h-screen" style="background-image: url('./static/img/profile.png')">
@@ -51,7 +55,7 @@
                     <dd class="text-gray-700 sm:col-span-2">
                         <label for="photoInput" class="cursor-pointer inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Masukkan Photo</label>
                         <input name="foto" type="file" id="photoInput" class="hidden" onchange="previewPhoto(this)">
-                        <img id="photoPreview" src="{{ url_for('static', filename='img/imgProfile/' + (users.foto if users else '')) }}" alt="Preview" style="display: none; max-width: 100%; height: auto;" width="200px" class="py-4">
+                        <img id="photoPreview" src="{{ url_for('static', filename='img/imgProfile/' + (users.foto if users and users.foto else '')) }}" alt="Preview" style="display: none; max-width: 100%; height: auto;" width="200px" class="py-4">
                     </dd>
                 </div>
                 <div class="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
@@ -82,6 +86,9 @@
             <div class="flex justify-end mt-4 gap-3">
                 <button type="submit" class="group flex items-center gap-4 rounded-lg border border-red-600 bg-red-600 px-5 py-3 transition-colors hover:bg-transparent focus:outline-none focus:ring">
                     <span class="font-medium text-white transition-colors group-hover:text-red-600 group-active:text-red-500">Perbarui</span>
+                </button>
+                <button type="button" onclick="goBack()" class="group flex items-center gap-4 rounded-lg border border-gray-400 bg-gray-400 px-5 py-3 transition-colors hover:bg-transparent focus:outline-none focus:ring">
+                    <span class="font-medium text-white transition-colors group-hover:text-gray-600 group-active:text-gray-500">Kembali</span>
                 </button>
             </div>
         </form>
