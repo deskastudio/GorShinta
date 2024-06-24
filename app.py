@@ -104,27 +104,27 @@ def register():
         hash_password = bcrypt.hashpw(password1, bcrypt.gensalt())
         
         if not fullname or not phone_number or not email or not password1 or not password2:
-            flash('Please fill in all fields')
+            flash('Semua kolom harus diisi')
             return redirect(url_for('register'))
         
         if len(password1) < 8:
-            flash('Password must be at least 8 characters long')
+            flash('Kata Sandi minimal 8 karakter')
             return redirect(url_for('register'))
         
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
-            flash('Invalid email address')
+            flash('email tidak valid')
             return redirect(url_for('register'))
         
         if not re.match(r'^\+?1?\d{9,15}$', phone_number):
-            flash('Invalid phone number')
+            flash('nomor telepon tidak valid')
             return redirect(url_for('register'))
 
         if password1 != password2:
-            flash('Passwords do not match')
+            flash('Kata sandi tidak cocok')
             return redirect(url_for('register'))
 
         if users_collection.find_one({'email': email}): 
-            flash('Email already exists')
+            flash('email sudah terdaftar')
             return redirect(url_for('register'))
         
         new_user = {
@@ -165,7 +165,7 @@ def login():
                 return redirect(url_for('selectField'))
 
             else:
-                flash("Invalid email or password")
+                flash("Email atau kata sandi salah, silahkan coba lagi")
                 return redirect(url_for('login'))
         else:
             flash("Gagal, User tidak ditemukan")
@@ -371,7 +371,7 @@ def admin_data_lapangan():
 @app.route('/tambahDataLapangan', methods=['GET', 'POST'])
 def tambah_data_lapangan():
     if not is_valid_admin():
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
     
     if request.method == 'POST':
@@ -493,7 +493,7 @@ def review():
 
         return render_template('adminReview.html', dataReview=dataReview, total_pages=total_pages, page=page)
     else:
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
 
 @app.route('/hapusReview/<string:_id>', methods=["GET", "POST"])
@@ -507,13 +507,13 @@ def admin_data_akun():
         admin = list(dataAdmin_collection.find({}))
         return render_template('adminDataAkun.html', admin=admin)
     else:
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
 
 @app.route('/tambahDataAdmin', methods=['GET', 'POST'])
 def tambah_data_admin():
     if not is_valid_admin():
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
 
     if request.method == 'POST':
@@ -549,7 +549,7 @@ def admin_data_pemesanan():
         dataPerPage = dataPemesanan[offset:offset + per_page]
         return render_template('adminDataPemesanan.html', dataPemesanan=dataPerPage,  dataPerPage=dataPerPage, total_pages=total_pages, page=page)
     else:
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
 
 
@@ -683,15 +683,23 @@ def selesaikan_pemesanan(_id):
 @app.route('/galeri', methods=['GET', 'POST'])
 def galeri():
     if is_valid_admin():
-        dataGaleri = list(db.dataGaleri.find({}))
-        return render_template('adminGaleri.html', dataGaleri=dataGaleri)
+        page = request.args.get('page', 1, type=int)
+        per_page = 5  # Ubah sesuai dengan kebutuhan Anda
+        total_data = db.dataGaleri.count_documents({})
+        total_pages = (total_data + per_page - 1) // per_page  # Menghitung total halaman
+
+        offset = (page - 1) * per_page
+        dataGaleri = list(db.dataGaleri.find().skip(offset).limit(per_page))
+
+        return render_template('adminGaleri.html', dataGaleri=dataGaleri, total_pages=total_pages, page=page)
     else:
         return redirect(url_for('admin_login'))
+
 
 @app.route('/tambahDataGaleri', methods=['GET', 'POST'])
 def tambah_data_galeri():
     if not is_valid_admin():
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
     
     if request.method == 'POST':
@@ -801,19 +809,14 @@ def admin_data_user():
 
         return render_template('adminDataUser.html', users=users,  total_pages=total_pages, page=page)
     else:
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
-
-
-
-
-
-
+    
 
 @app.route('/tambahDataPelanggan', methods=['GET', 'POST'])
 def tambah_data_pelanggan():
     if not is_valid_admin():
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
     
     if request.method == 'GET':
@@ -827,27 +830,27 @@ def tambah_data_pelanggan():
         hash_password = bcrypt.hashpw(password1, bcrypt.gensalt())
         
         if not fullname or not phone_number or not email or not password1 or not password2:
-            flash('Please fill in all fields')
+            flash('semua kolom harus diisi')
             return redirect(url_for('tambah_data_pelanggan'))
         
         if len(password1) < 8:
-            flash('Password must be at least 8 characters long')
+            flash('Kata sandi minimal 8 karakter')
             return redirect(url_for('tambah_data_pelanggan'))
         
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
-            flash('Invalid email address')
+            flash('Email tidak valid')
             return redirect(url_for('tambah_data_pelanggan'))
         
         if not re.match(r'^\+?1?\d{9,15}$', phone_number):
-            flash('Invalid phone number')
+            flash('Nomor telepon tidak valid')
             return redirect(url_for('tambah_data_pelanggan'))
 
         if password1 != password2:
-            flash('Passwords do not match')
+            flash('Kata sandi tidak cocok')
             return redirect(url_for('tambah_data_pelanggan'))
 
         if users_collection.find_one({'email': email}): 
-            flash('Email already exists')
+            flash('Email sudah terdaftar')
             return redirect(url_for('tambah_data_pelanggan'))
         
         new_user = {
@@ -876,13 +879,13 @@ def admin_pembayaran():
         pembayaran = list(dataPembayaran_collection.find({}))
         return render_template('adminPembayaran.html', pembayaran=pembayaran)
     else:
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
 
 @app.route('/tambahDataPembayaran', methods=['GET', 'POST'])
 def tambah_data_pembayaran():
     if not is_valid_admin():
-        flash('Please log in as an admin to access this page.')
+        flash('Silakan masuk sebagai admin untuk mengakses halaman ini.')
         return redirect(url_for('admin_login'))
     
     if request.method == 'POST':
@@ -935,7 +938,7 @@ def admin_login():
             session['admin_id'] = str(user['_id'])
             return redirect(url_for('admin_data_akun'))
         else:
-            flash('Invalid username or password')
+            flash('Username atau password salah. Silakan coba lagi.')
             return redirect(url_for('admin_login'))
     
     return render_template('adminLogin.html')
